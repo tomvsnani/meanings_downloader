@@ -6,11 +6,14 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +35,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -39,6 +43,9 @@ import java.util.concurrent.Executors;
 
 
 public class BlankFragment extends Fragment {
+    String entered_meaning;
+    Database database;
+    Adapter adapter;
     private Scanner sc;
     private EditText editText;
     private View v;
@@ -50,9 +57,8 @@ public class BlankFragment extends Fragment {
     private TextView exampleText;
     private LiveData<List<Entity>> list;
     private Entity entity;
-    String entered_meaning;
-    Database database;
-    Adapter adapter;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
 
 
     public BlankFragment() {
@@ -63,26 +69,34 @@ public class BlankFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_blank, container, false);
+        button = v.findViewById(R.id.search);
+        //text = v.findViewById(R.id.text);
+        editText = v.findViewById(R.id.meaning);
+        //exampleText = v.findViewById(R.id.example);
+        recyclerView = v.findViewById(R.id.recycler_view);
+        getDataFromDatabase();
+        linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        adapter = new Adapter(this.getContext(),recyclerView);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
         return v;
     }
+
 
     @Override
     public void onStart() {
         super.onStart();
-
-        button = getView().findViewById(R.id.search);
-        text = getView().findViewById(R.id.text);
-        editText = getView().findViewById(R.id.meaning);
-        exampleText = getView().findViewById(R.id.example);
-
 
         button.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
                 try {
-                    entity=new Entity();
+
+                    entity = new Entity();
                     set_url();
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -96,16 +110,12 @@ public class BlankFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        database=Database.Database_create(getActivity().getApplicationContext());
+        database = Database.Database_create(getActivity().getApplicationContext());
+
+
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getDataFromDatabase();
-
-    }
 
     public void set_url() throws IOException {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
@@ -114,7 +124,7 @@ public class BlankFragment extends Fragment {
             public void run() {
                 if (!editText.getText().toString().isEmpty()) {
                     Log.d("entered", "enter");
-                     entered_meaning = editText.getText().toString();
+                    entered_meaning = editText.getText().toString();
                     String url_string = "https://googledictionaryapi.eu-gb.mybluemix.net/?define=" + entered_meaning + "&lang=en";
 
 
@@ -151,24 +161,15 @@ public class BlankFragment extends Fragment {
         final String s = sc.next();
         final String str = JsonParser.parser(s);
         final String example = JsonParser.example();
-       storeInDatabase(str,example);
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Log.d("examplereceived", str);
-                if (!str.isEmpty())
-                    text.setText(str);
-                if (example != null)
-                    exampleText.setText(example);
+        storeInDatabase(str, example);
 
-            }
-        });
 
         connection.disconnect();
 
 
     }
-    public void storeInDatabase(String str,String example){
+
+    public void storeInDatabase(String str, String example) {
 
         entity.setMeaning_of_word(str);
         entity.setExample(example);
@@ -181,26 +182,22 @@ public class BlankFragment extends Fragment {
         });
     }
 
-    public LiveData<List<Entity>> getDataFromDatabase(){
+    public LiveData<List<Entity>> getDataFromDatabase() {
 
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
+        list = database.dao().load_all_data();
+        list.observe(getViewLifecycleOwner(), new Observer<List<Entity>>() {
             @Override
-            public void run() {
-                list= database.dao().load_all_data() ;
-                list.observe(getViewLifecycleOwner(), new Observer<List<Entity>>() {
-                    @Override
-                    public void onChanged(List<Entity> entities) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+            public void onChanged(final List<Entity> entities) {
 
-                            }
-                        });
+                Collections.reverse(entities);
 
-                    }
-                });
+                adapter.submitList(entities);
+
+
             }
         });
+
+
         return list;
     }
 

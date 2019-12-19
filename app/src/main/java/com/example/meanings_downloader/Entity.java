@@ -5,11 +5,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @androidx.room.Entity(tableName = "Entity")
 public class Entity {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo(name = "name")
     private String name_of_meaning;
@@ -27,7 +28,7 @@ public class Entity {
     private String example;
 
     public Entity(){};
-
+@Ignore
 public Entity(int id,String name_of_meaning,String meaning_of_word,String example){
     this.id=id;
     this.name_of_meaning=name_of_meaning;
@@ -84,6 +85,6 @@ public Entity(int id,String name_of_meaning,String meaning_of_word,String exampl
         if(obj==this)
             return true;
         Entity objec=(Entity)obj;
-        return objec.getId()==this.getId() && objec.getName_of_meaning()==(this.name_of_meaning);
+        return objec.getId()==this.getId() && objec.getName_of_meaning().equals(this.getName_of_meaning());
     }
 }
