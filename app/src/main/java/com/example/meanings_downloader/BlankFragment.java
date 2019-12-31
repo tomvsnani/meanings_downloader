@@ -1,6 +1,7 @@
 package com.example.meanings_downloader;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -9,19 +10,28 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +56,10 @@ public class BlankFragment extends Fragment {
     String entered_meaning;
     Database database;
     Adapter adapter;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle actionBarDrawerToggle;
+    datepicker date;
     private Scanner sc;
     private EditText editText;
     private View v;
@@ -74,11 +88,59 @@ public class BlankFragment extends Fragment {
         editText = v.findViewById(R.id.meaning);
         //exampleText = v.findViewById(R.id.example);
         recyclerView = v.findViewById(R.id.recycler_view);
+        drawerLayout = v.findViewById(R.id.drawer);
+        navigationView = v.findViewById(R.id.navigation);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, R.string.opened, R.string.closed);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.date) {
+                  //  date.setCancelable(false);
+                   // date.show(getFragmentManager(), "Date");
+                   /* final test test=new test();
+
+                        Executors.newSingleThreadExecutor().execute(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                try {
+                                    test.create(getContext());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });*/
+
+
+                }
+                if (item.getItemId() == R.id.random) {
+                    Log.d("nothing", "random");
+                    Intent intent=new Intent(getActivity(),SettingsActivity.class);
+                    startActivity(intent);
+                }
+
+                if(item.getItemId()==R.id.music){
+                    Intent intent=new Intent(getActivity(),Music_Activity.class);
+                    startActivity(intent);
+                }
+
+                return true;
+            }
+        });
+
         getDataFromDatabase();
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        adapter = new Adapter(this.getContext(),recyclerView);
+        adapter = new Adapter(this.getContext(), recyclerView);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(linearLayoutManager);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(adapter.simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         return v;
     }
@@ -88,7 +150,10 @@ public class BlankFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+
         button.setOnClickListener(new View.OnClickListener() {
+
+
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
@@ -107,11 +172,27 @@ public class BlankFragment extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.d("touchedhere", "touch");
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            Log.d("touchedhere", "touched");
+            if (drawerLayout.isDrawerOpen(GravityCompat.START))
+                drawerLayout.closeDrawer(GravityCompat.START);
+            else drawerLayout.openDrawer(GravityCompat.START);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         database = Database.Database_create(getActivity().getApplicationContext());
+        date = new datepicker();
 
+        setHasOptionsMenu(true);
 
 
     }
@@ -177,9 +258,16 @@ public class BlankFragment extends Fragment {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                database.dao().insert(entity);
+                Long i = database.dao().insert(entity);
+                if (i != null) {
+                    Log.d("recyclerview", String.valueOf(i));
+                    recyclerView.smoothScrollToPosition(0);
+                }
+
+
             }
         });
+
     }
 
     public LiveData<List<Entity>> getDataFromDatabase() {
@@ -190,6 +278,7 @@ public class BlankFragment extends Fragment {
             public void onChanged(final List<Entity> entities) {
 
                 Collections.reverse(entities);
+
 
                 adapter.submitList(entities);
 

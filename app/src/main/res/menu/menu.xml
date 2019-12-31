@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="datapicker"
+        android:id="@+id/date"/>
+    <item android:id="@+id/random"
+        android:title="random"/>
+    <item android:id="@+id/music"
+        android:title="music"/>
+
+</menu>

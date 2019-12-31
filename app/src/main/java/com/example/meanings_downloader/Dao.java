@@ -1,5 +1,7 @@
 package com.example.meanings_downloader;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.Delete;
@@ -13,7 +15,7 @@ import java.util.List;
 @androidx.room.Dao
 public interface Dao {
     @Insert
-    public void insert(Entity entity);
+    public Long insert(Entity entity);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     public void update(Entity entity);

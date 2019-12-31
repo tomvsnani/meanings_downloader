@@ -13,17 +13,38 @@ import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 public class Adapter extends ListAdapter {
     private List<Entity>list=new ArrayList<>();
     private Entity entity;
     private Context context;
     private  RecyclerView recyclerView;
+
+     Database database=Database.Database_create(new BlankFragment().getContext());
+  public   ItemTouchHelper.SimpleCallback simpleCallback=new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP,ItemTouchHelper.LEFT ) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
+            Executors.newSingleThreadExecutor().execute(new Runnable() {
+                @Override
+                public void run() {
+                    database.dao().delete((Entity) getItem(((Holder)viewHolder).getAdapterPosition()));
+                }
+            });
+
+        }
+    };
 
     protected Adapter(Context context,RecyclerView recyclerView) {
 
@@ -35,7 +56,7 @@ public class Adapter extends ListAdapter {
     @Override
     public void submitList(@Nullable List list) {
         super.submitList(list != null ? new ArrayList<>(list) : null);
-        recyclerView.smoothScrollToPosition(0);
+       // recyclerView.smoothScrollToPosition(0);
     }
 
     @NonNull
@@ -81,7 +102,10 @@ Log.d("countokay","okay");
         } else
             return 0;
     }
+public interface listene{
+     void  onclick();
 
+    }
 
 }
 
