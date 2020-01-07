@@ -6,5 +6,7 @@
         android:title="random"/>
     <item android:id="@+id/music"
         android:title="music"/>
+    <item android:id="@+id/saved_meanings"
+        android:title="saved_meanings"/>
 
 </menu>

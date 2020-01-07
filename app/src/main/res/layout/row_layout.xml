@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape"
-    android:layout_margin="16dp">
+    android:layout_marginBottom="3dp"
+
+    android:layout_marginTop="1dp"
+    android:background="@drawable/shape_button"
+    >
+
     <TextView
+        android:id="@+id/textview_meaning"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-android:id="@+id/textview_meaning"
+        android:layout_height="50dp"
+        android:layout_marginLeft="16dp"
+       android:gravity="center"
+        android:textSize="18dp"
+        android:textStyle="bold|italic"
         android:clickable="true"
-        android:text="@string/meaning"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="6dp"
-        android:layout_marginLeft="8dp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textview_example"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
+        android:text="@string/meaning" />
+
 
 
 

@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    app:color="?android:colorControlHighlight"
-    android:color="@color/colorPrimary"
-    tools:targetApi="lollipop">
-    <item>
 
-        <shape
-            android:shape="rectangle">
+<shape android:shape="rectangle"
+    xmlns:android="http://schemas.android.com/apk/res/android">
             <corners
-                android:radius="5dp"/>
+                android:radius="10dp"/>
+
             <stroke
-                android:color="#CCCCCC"/>
-            <solid android:color="#ffffff"/>
+                android:color="#931f1d"
+                />
+            <solid android:color="#ffffa8"/>
 
 
 
         </shape>
-    </item>
-
-</ripple>

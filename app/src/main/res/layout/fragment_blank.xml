@@ -6,37 +6,76 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:openDrawer="start"
     android:id="@+id/drawer">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="9">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".BlankFragment"
     android:orientation="vertical"
-    android:background="@drawable/two_color">
-
-    <EditText
+android:background="#ffffa8"
+    android:id="@+id/linear">
+   <com.google.android.material.appbar.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/toolbar_main"/>
+</com.google.android.material.appbar.AppBarLayout>
+
+    <EditText
         android:id="@+id/meaning"
-        android:layout_margin="16dp"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+
+        android:background="@drawable/ripple"
+        android:hint="Type here . . ."
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:textStyle="italic"
+        android:padding="16dp"
+        android:maxLines="1"/>
 
     <Button
         android:id="@+id/search"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:padding="20dp"
+
+        android:background="@drawable/shape_button"
+
+        android:text="Search"
+
         />
 
 
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="9"
+    tools:elevation="16dp"
+    android:layout_margin="16dp"
+    android:background="@drawable/ripple"
+    >
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="4dp"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
         />
 </LinearLayout>
+</LinearLayout>
+    </FrameLayout>
+
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

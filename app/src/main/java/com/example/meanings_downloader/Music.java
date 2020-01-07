@@ -23,47 +23,48 @@ public class Music extends MediaBrowserServiceCompat {
 
     @Override
     public void onCreate() {
-        Log.d("ippudu","vacchina");
+        Log.d("ippudu", "vacchina");
         super.onCreate();
         player=new MediaPlayer();
 
-       compat =new MediaSessionCompat(this,"hello");
-       compat.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS|MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
-        PlaybackStateCompat.Builder builder=new PlaybackStateCompat.Builder().setActions(PlaybackStateCompat.ACTION_PLAY|PlaybackStateCompat.ACTION_PLAY_PAUSE);
-        compat.setPlaybackState(builder.build());
+        compat=new MediaSessionCompat(this,"hello");
+
+        PlaybackStateCompat.Builder playbackstate=new PlaybackStateCompat.Builder().setActions(PlaybackStateCompat.ACTION_PLAY | PlaybackStateCompat.ACTION_PLAY_PAUSE);
+
+        compat.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+
+        compat.setPlaybackState(playbackstate.build());
+
+
+
+
         compat.setCallback(new MediaSessionCompat.Callback() {
 
-            @Override
-            public void onPlayFromMediaId(String mediaId, Bundle extras) {
-                super.onPlayFromMediaId(mediaId, extras);
-                Log.d("lengthof","duration1");
-                Uri uri=Uri.parse("android.resource://"+getPackageName()+"/"+mediaId);
-                Log.d("lengthof","duration2");
-                try {
-                    player.setDataSource(getApplicationContext(),uri);
-                    player.prepare();
-                    player.start();
-                    Log.d("lengthof","duration"+String.valueOf(player.getDuration()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+                               @Override
+                               public void onPlayFromUri(Uri uri, Bundle extras) {
+                                   super.onPlayFromUri(uri, extras);
+                                   Log.d("enteredprepared", "here");
+                                   try {
+                                       player.setDataSource(getApplicationContext(), uri);
+                                   } catch (IOException e) {
+                                       e.printStackTrace();
+                                   }
+                                   try {
+                                       player.prepare();
+                                   } catch (IOException e) {
+                                       e.printStackTrace();
+                                   }
+                                   player.start();
+                               }
 
-
-
-            @Override
-            public void onPause() {
-                super.onPause();
-                player.pause();
-            }
-        });
-       setSessionToken(compat.getSessionToken());
+                           });
+        setSessionToken(compat.getSessionToken());
     }
 
     @Nullable
     @Override
     public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, @Nullable Bundle rootHints) {
-        return new  BrowserRoot("hello",null);
+        return new BrowserRoot("hello",null);
     }
 
     @Override

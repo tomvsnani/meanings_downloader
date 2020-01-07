@@ -1,5 +1,6 @@
 package com.example.meanings_downloader;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -29,6 +31,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -73,6 +77,9 @@ public class BlankFragment extends Fragment {
     private Entity entity;
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
+    private FrameLayout frameLayout;
+    private LinearLayout linearLayout;
+    Toolbar toolbar;
 
 
     public BlankFragment() {
@@ -90,43 +97,49 @@ public class BlankFragment extends Fragment {
         recyclerView = v.findViewById(R.id.recycler_view);
         drawerLayout = v.findViewById(R.id.drawer);
         navigationView = v.findViewById(R.id.navigation);
+        frameLayout = v.findViewById(R.id.inner_fragment);
+        linearLayout=v.findViewById(R.id.linear);
+        toolbar=v.findViewById(R.id.toolbar_main);
         actionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, R.string.opened, R.string.closed);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
+
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         actionBarDrawerToggle.syncState();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.date) {
-                  //  date.setCancelable(false);
-                   // date.show(getFragmentManager(), "Date");
-                   /* final test test=new test();
+                    //  date.setCancelable(false);
+                    // date.show(getFragmentManager(), "Date");
+                    final test test = new test();
 
-                        Executors.newSingleThreadExecutor().execute(new Runnable() {
-                            @Override
-                            public void run() {
+                    Executors.newSingleThreadExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
 
-                                try {
-                                    test.create(getContext());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-
+                            try {
+                                test.create(getContext());
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
-                        });*/
+
+                        }
+                    });
 
 
                 }
                 if (item.getItemId() == R.id.random) {
                     Log.d("nothing", "random");
-                    Intent intent=new Intent(getActivity(),SettingsActivity.class);
+                    Intent intent = new Intent(getActivity(), SettingsActivity.class);
                     startActivity(intent);
                 }
 
-                if(item.getItemId()==R.id.music){
-                    Intent intent=new Intent(getActivity(),Music_Activity.class);
+                if (item.getItemId() == R.id.music) {
+                    Intent intent = new Intent(getActivity(), Music_Activity.class);
                     startActivity(intent);
                 }
 
@@ -136,7 +149,7 @@ public class BlankFragment extends Fragment {
 
         getDataFromDatabase();
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        adapter = new Adapter(this.getContext(), recyclerView);
+        adapter = new Adapter(this.getContext(), recyclerView, (MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(linearLayoutManager);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(adapter.simpleCallback);
