@@ -2,28 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="3dp"
 
-    android:layout_marginTop="1dp"
-    android:background="@drawable/shape_button"
+
+    android:clickable="true"
+    android:focusable="true"
+
+
     >
 
     <TextView
+
         android:id="@+id/textview_meaning"
-        android:layout_width="match_parent"
+        android:layout_width="310dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="16dp"
-       android:gravity="center"
-        android:textSize="18dp"
-        android:textStyle="bold|italic"
         android:clickable="true"
-        android:text="@string/meaning" />
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingLeft="20dp"
+        android:text="@string/meaning"
+        android:textColor="#ffffff"
+        android:textSize="25sp"
+        android:textStyle="italic" />
 
 
+    <ImageView
+        android:id="@+id/add_fav_meaning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginLeft="50dp"
+        android:src="@drawable/likes"
+        android:tag="@string/like"
 
-
-        />
+        android:backgroundTint="@android:color/transparent"
+        style="?attr/borderlessButtonStyle"/>
 </LinearLayout>

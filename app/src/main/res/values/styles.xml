@@ -1,13 +1,23 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="colorPrimary"> #725b53</item>
-        <item name="colorPrimaryDark">#725b53</item>
+        <item name="colorPrimary"> #1B123E</item>
+        <item name="colorPrimaryDark">#1B123E</item>
         <item name="colorAccent">#555994</item>
+        <item name="colorControlHighlight">#ef6c00</item>
+
+        <item name="colorControlNormal">@color/colorAccent</item>
+
+
+
+
+
+
+
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 

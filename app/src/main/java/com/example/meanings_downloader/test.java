@@ -58,6 +58,7 @@ public class test {
 
         bufferedOutputStream.close();
         outputStream.close();
+        stream.close();
         connection.disconnect();
     }
 

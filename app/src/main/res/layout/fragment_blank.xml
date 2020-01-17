@@ -1,85 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:openDrawer="start"
-    android:id="@+id/drawer">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="9">
-
-<LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BlankFragment"
-    android:orientation="vertical"
-android:background="#ffffa8"
-    android:id="@+id/linear">
-   <com.google.android.material.appbar.AppBarLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/toolbar_main"/>
-</com.google.android.material.appbar.AppBarLayout>
-
-    <EditText
-        android:id="@+id/meaning"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-
-        android:background="@drawable/ripple"
-        android:hint="Type here . . ."
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:textStyle="italic"
-        android:padding="16dp"
-        android:maxLines="1"/>
-
-    <Button
-        android:id="@+id/search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:padding="20dp"
-
-        android:background="@drawable/shape_button"
-
-        android:text="Search"
-
-        />
+    tools:openDrawer="start">
 
 
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_weight="9"
-    tools:elevation="16dp"
-    android:layout_margin="16dp"
-    android:background="@drawable/ripple"
-    >
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="4dp"
-        android:id="@+id/recycler_view"
+    <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+android:background="@drawable/shape_button"
+        tools:context=".BlankFragment">
 
-        />
-</LinearLayout>
-</LinearLayout>
-    </FrameLayout>
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:titleTextColor="#cccccc"
+                >
+
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/meaning"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="7"
+android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
+                android:hint="Type here . . ."
+                android:maxLines="1"
+                android:padding="16dp"
+                android:textStyle="italic" />
+
+            <ImageButton
+                android:id="@+id/search"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:clickable="true"
+                android:src="@drawable/ic_search_black_24dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="16dp"
+
+                tools:targetApi="lollipop" />
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+
+            android:layout_weight="9"
+
+            tools:elevation="16dp">
+
+<ProgressBar
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/progress"
+    android:visibility="gone"
+    android:layout_gravity="center"
+    android:indeterminateTint="@color/colorAccent"
+    android:indeterminate="true"
+    tools:targetApi="lollipop" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_marginTop="4dp"
+
+                />
+        </FrameLayout>
+    </LinearLayout>
+
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:id="@+id/navigation"
-        app:menu="@menu/menu"/>
+        app:itemTextColor="#cccccc"
+        app:menu="@menu/menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

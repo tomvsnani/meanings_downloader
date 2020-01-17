@@ -1,8 +1,10 @@
 package com.example.meanings_downloader;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -23,17 +25,23 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -55,6 +63,8 @@ import java.util.Scanner;
 
 import java.util.concurrent.Executors;
 
+import static android.app.Activity.RESULT_OK;
+
 
 public class BlankFragment extends Fragment {
     String entered_meaning;
@@ -68,7 +78,7 @@ public class BlankFragment extends Fragment {
     private EditText editText;
     private View v;
     private URL url;
-    private Button button;
+    private ImageButton button;
     private HttpURLConnection connection;
     private TextView text;
     private InputStream inputStream;
@@ -80,19 +90,23 @@ public class BlankFragment extends Fragment {
     private FrameLayout frameLayout;
     private LinearLayout linearLayout;
     Toolbar toolbar;
+    ProgressBar progressbar;
+    String s="";
 
 
     public BlankFragment() {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_blank, container, false);
         button = v.findViewById(R.id.search);
         //text = v.findViewById(R.id.text);
         editText = v.findViewById(R.id.meaning);
+        progressbar=v.findViewById(R.id.progress);
         //exampleText = v.findViewById(R.id.example);
         recyclerView = v.findViewById(R.id.recycler_view);
         drawerLayout = v.findViewById(R.id.drawer);
@@ -107,7 +121,7 @@ public class BlankFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         actionBarDrawerToggle.syncState();
 
-
+//actionBarDrawerToggle.getDrawerArrowDrawable().setColor(Color.RED);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -134,8 +148,13 @@ public class BlankFragment extends Fragment {
                 }
                 if (item.getItemId() == R.id.random) {
                     Log.d("nothing", "random");
-                    Intent intent = new Intent(getActivity(), SettingsActivity.class);
-                    startActivity(intent);
+                   // Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                   // startActivity(intent);
+                   Intent intent1=new Intent(Intent.ACTION_PICK);
+                   intent1.setData(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                   startActivityForResult(intent1,2);
+
+
                 }
 
                 if (item.getItemId() == R.id.music) {
@@ -149,7 +168,7 @@ public class BlankFragment extends Fragment {
 
         getDataFromDatabase();
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        adapter = new Adapter(this.getContext(), recyclerView, (MainActivity) getActivity());
+        adapter = new Adapter(this.getContext(), recyclerView, (MainActivity) getActivity(),progressbar);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(linearLayoutManager);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(adapter.simpleCallback);
@@ -158,6 +177,29 @@ public class BlankFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d("givenuri","a1");
+
+        if( requestCode==2)
+        {
+            if(resultCode==RESULT_OK)
+        {
+            Intent intent=new Intent(Intent.ACTION_VIEW);
+            Log.d("givenuri",data.getData().toString());
+Uri uri=data.getData();
+
+
+
+            intent.setDataAndType(data.getData(),"audio/mp3");
+           intent.putExtra(Intent.EXTRA_STREAM,uri);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+            startActivity(intent);
+        }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     public void onStart() {
@@ -217,10 +259,17 @@ public class BlankFragment extends Fragment {
             @Override
             public void run() {
                 if (!editText.getText().toString().isEmpty()) {
+
                     Log.d("entered", "enter");
                     entered_meaning = editText.getText().toString();
                     String url_string = "https://googledictionaryapi.eu-gb.mybluemix.net/?define=" + entered_meaning + "&lang=en";
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            BlankFragment.this.progressbar.setVisibility(View.VISIBLE);
 
+                        }
+                    });
 
                     try {
                         url = new URL(url_string);
@@ -228,7 +277,16 @@ public class BlankFragment extends Fragment {
                         e.printStackTrace();
                     }
                     try {
+
                         retrieve(url);
+                        if(!s.equals("entered")){
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressbar.setVisibility(View.GONE);
+                                }
+                            });
+                        }
 
 
                     } catch (IOException e) {
@@ -246,22 +304,48 @@ public class BlankFragment extends Fragment {
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void retrieve(URL se) throws IOException, JSONException {
+    private void retrieve(URL se) throws IOException, JSONException {
+
         connection = (HttpURLConnection) se.openConnection();
-        inputStream = connection.getInputStream();
-        Log.d("itsokay", "okay");
-        sc = new Scanner(inputStream);
-        sc.useDelimiter("\\A");
-        final String s = sc.next();
-        final String str = JsonParser.parser(s);
-        final String example = JsonParser.example();
-        storeInDatabase(str, example);
+        if (connection.getResponseCode()==(HttpURLConnection.HTTP_NOT_FOUND)) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressbar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "No meaning found. Please Check the spelling", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+        else
+        {
+            inputStream = connection.getInputStream();
+            sc = new Scanner(inputStream);
+            sc.useDelimiter("\\A");
+
+            final String Json_raw = sc.next();
+            final String definition = JsonParser.parser(Json_raw);
+            final String example = JsonParser.example();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressbar.setVisibility(View.GONE);
+                }
+            });
+            if (definition != null) {
+                storeInDatabase(definition, example);
+            } else
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), "No meaning found. Please Check the spelling", Toast.LENGTH_LONG).show();
+                    }
+                });
 
 
-        connection.disconnect();
-
-
+            connection.disconnect();
+        }
     }
+
 
     public void storeInDatabase(String str, String example) {
 

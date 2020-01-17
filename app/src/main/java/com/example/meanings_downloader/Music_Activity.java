@@ -106,7 +106,7 @@ public class Music_Activity extends AppCompatActivity implements View.OnClickLis
 
 
     public void preparedata() throws IOException {
-        resolver=getContentResolver();
+      /*  resolver=getContentResolver();
         Cursor cursor= null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,null,null,null);
@@ -117,7 +117,8 @@ public class Music_Activity extends AppCompatActivity implements View.OnClickLis
            contentUri=ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,id);
            Log.d("enteredprepared",contentUri.toString());
 
-        MediaControllerCompat.getMediaController(Music_Activity.this).getTransportControls().playFromUri(contentUri,null);
+        MediaControllerCompat.getMediaController(Music_Activity.this).getTransportControls().playFromUri(contentUri,null);*/
+
 
 
 

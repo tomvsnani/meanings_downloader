@@ -16,8 +16,10 @@ public class JsonParser {
 
     static String example_String;
 
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static String parser(String sc) throws JSONException {
+        String definition ="";
         Log.d("exampleokay", "hello");
         JSONArray jsonArray;
         JSONObject jsonObject;
@@ -47,19 +49,23 @@ public class JsonParser {
 
                         example_String ="Could not find an example .";
 
-
+Log.d("stringfound","hey");
 
                 StringTokenizer stringTokenizer = new StringTokenizer(str, ";");
-                String finals ="";
+
 
 
                 while (stringTokenizer.hasMoreTokens()) {
 
-                    finals = finals+stringTokenizer.nextToken()+" .\n";
+                    definition = definition+stringTokenizer.nextToken()+" .\n";
 
                 }
+               // Log.d("stringfoundd","meaning"+json_meaning.getString("meaning"));
+               // if(!json_meaning.getString("meaning").equals(""))
+                if(!definition.equals(""))
+                    return definition;
 
-                return finals;
+               // return null;
             }
 
 

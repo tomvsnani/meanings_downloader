@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,13 +49,15 @@ public class Adapter extends ListAdapter {
     private Context context;
     private RecyclerView recyclerView;
     Clicklistener listener;
+    ProgressBar progressBar;
 
-    protected Adapter(Context context, RecyclerView recyclerView,MainActivity blankFragment) {
+    protected Adapter(Context context, RecyclerView recyclerView, MainActivity blankFragment, ProgressBar progressBar) {
 
         super(Entity.diffcall);
         this.context = context;
         this.recyclerView = recyclerView;
         this.listener=blankFragment;
+        this.progressBar=progressBar;
     }
 
     @Override
@@ -79,6 +83,7 @@ public class Adapter extends ListAdapter {
 
         ((Holder) holder).textview_meaning.setText(entity.getName_of_meaning());
 
+
        /* if (!entity.getExample().isEmpty())
             ( (Holder)holder).textView_example.setText(HtmlCompat.fromHtml("<b> "+context.getResources().getString(R.string.example)+"</b>"+"  "+entity.getExample(),0));
         if (!entity.getMeaning_of_word().isEmpty())
@@ -99,19 +104,18 @@ public class Adapter extends ListAdapter {
     }
 
 
-    public interface listene {
-        void onclick();
 
-    }
 
     class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView textView_example;
+        ImageView fav_meaning_image;
         TextView textview_meaning;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
             // textView_example=itemView.findViewById(R.id.textview_example);
             textview_meaning = itemView.findViewById(R.id.textview_meaning);
+            fav_meaning_image=itemView.findViewById(R.id.add_fav_meaning);
+            fav_meaning_image.setOnClickListener(this);
             textview_meaning.setOnClickListener(this);
 
 
@@ -119,12 +123,12 @@ public class Adapter extends ListAdapter {
 
         @Override
         public void onClick(View v) {
-          listener.onclick(getAdapterPosition(),(Entity) getItem(getAdapterPosition()));
+          listener.onclick(getAdapterPosition(),(Entity) getItem(getAdapterPosition()),v,progressBar);
         }
     }
 
     public interface Clicklistener{
-        void onclick(int adapterposition,Entity entity);
+        void onclick(int adapterposition,Entity entity,View view,ProgressBar progressBar1);
     }
 
 }

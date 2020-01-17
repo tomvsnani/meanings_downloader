@@ -2,12 +2,14 @@ package com.example.meanings_downloader;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -49,6 +51,7 @@ public class inner_meanings_fragment extends Fragment {
         if (getArguments() != null) {
             meaning = getArguments().getString(ARG_PARAM1);
             example = getArguments().getString(ARG_PARAM2);
+            setHasOptionsMenu(true);
         }
 
 
@@ -71,10 +74,13 @@ public class inner_meanings_fragment extends Fragment {
         return v;
     }
 
-
-
-
-
-
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+            if(item.getItemId()==android.R.id.home)
+            {
+                getActivity().onBackPressed();
+            }
+        return super.onOptionsItemSelected(item);
+    }
 
 }
