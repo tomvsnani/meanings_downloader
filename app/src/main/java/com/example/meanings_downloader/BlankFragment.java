@@ -74,28 +74,28 @@ public class BlankFragment extends Fragment {
     NavigationView navigationView;
     ActionBarDrawerToggle actionBarDrawerToggle;
     datepicker date;
+    Adapter.Clicklistener clicklistener;
+    Toolbar toolbar;
+    ProgressBar progressbar;
+    String s = "";
     private Scanner sc;
     private EditText editText;
     private View v;
     private URL url;
     private ImageButton button;
     private HttpURLConnection connection;
-    private TextView text;
     private InputStream inputStream;
-    private TextView exampleText;
     private LiveData<List<Entity>> list;
     private Entity entity;
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
-    private FrameLayout frameLayout;
-    private LinearLayout linearLayout;
-    Toolbar toolbar;
-    ProgressBar progressbar;
-    String s="";
 
+
+    public BlankFragment(Adapter.Clicklistener clicklistener) {
+        this.clicklistener = clicklistener;
+    }
 
     public BlankFragment() {
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -104,21 +104,17 @@ public class BlankFragment extends Fragment {
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_blank, container, false);
         button = v.findViewById(R.id.search);
-        //text = v.findViewById(R.id.text);
         editText = v.findViewById(R.id.meaning);
-        progressbar=v.findViewById(R.id.progress);
-        //exampleText = v.findViewById(R.id.example);
+        progressbar = v.findViewById(R.id.progress);
         recyclerView = v.findViewById(R.id.recycler_view);
         drawerLayout = v.findViewById(R.id.drawer);
         navigationView = v.findViewById(R.id.navigation);
-        frameLayout = v.findViewById(R.id.inner_fragment);
-        linearLayout=v.findViewById(R.id.linear);
-        toolbar=v.findViewById(R.id.toolbar_main);
+        toolbar = v.findViewById(R.id.toolbar_main);
         actionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, R.string.opened, R.string.closed);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         actionBarDrawerToggle.syncState();
 
 //actionBarDrawerToggle.getDrawerArrowDrawable().setColor(Color.RED);
@@ -148,18 +144,19 @@ public class BlankFragment extends Fragment {
                 }
                 if (item.getItemId() == R.id.random) {
                     Log.d("nothing", "random");
-                   // Intent intent = new Intent(getActivity(), SettingsActivity.class);
-                   // startActivity(intent);
-                   Intent intent1=new Intent(Intent.ACTION_PICK);
-                   intent1.setData(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-                   startActivityForResult(intent1,2);
+                    // Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                    // startActivity(intent);
+                    Intent intent1 = new Intent(Intent.ACTION_PICK);
+                    intent1.setData(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent1, 2);
 
 
                 }
 
                 if (item.getItemId() == R.id.music) {
-                    Intent intent = new Intent(getActivity(), Music_Activity.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(getActivity(), Music_Activity.class);
+//                    startActivity(intent);
+                    clicklistener.onclick();
                 }
 
                 return true;
@@ -168,7 +165,7 @@ public class BlankFragment extends Fragment {
 
         getDataFromDatabase();
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        adapter = new Adapter(this.getContext(), recyclerView, (MainActivity) getActivity(),progressbar);
+        adapter = new Adapter(this.getContext(), recyclerView, (MainActivity) getActivity(), progressbar);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(linearLayoutManager);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(adapter.simpleCallback);
@@ -179,24 +176,21 @@ public class BlankFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.d("givenuri","a1");
+        Log.d("givenuri", "a1");
 
-        if( requestCode==2)
-        {
-            if(resultCode==RESULT_OK)
-        {
-            Intent intent=new Intent(Intent.ACTION_VIEW);
-            Log.d("givenuri",data.getData().toString());
-Uri uri=data.getData();
+        if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Log.d("givenuri", data.getData().toString());
+                Uri uri = data.getData();
 
 
+                intent.setDataAndType(data.getData(), "audio/mp3");
+                //  intent.putExtra(Intent.EXTRA_STREAM,uri);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
-            intent.setDataAndType(data.getData(),"audio/mp3");
-           intent.putExtra(Intent.EXTRA_STREAM,uri);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-            startActivity(intent);
-        }
+                startActivity(intent);
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -240,6 +234,7 @@ Uri uri=data.getData();
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -279,7 +274,7 @@ Uri uri=data.getData();
                     try {
 
                         retrieve(url);
-                        if(!s.equals("entered")){
+                        if (!s.equals("entered")) {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -307,7 +302,7 @@ Uri uri=data.getData();
     private void retrieve(URL se) throws IOException, JSONException {
 
         connection = (HttpURLConnection) se.openConnection();
-        if (connection.getResponseCode()==(HttpURLConnection.HTTP_NOT_FOUND)) {
+        if (connection.getResponseCode() == (HttpURLConnection.HTTP_NOT_FOUND)) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -315,9 +310,7 @@ Uri uri=data.getData();
                     Toast.makeText(getContext(), "No meaning found. Please Check the spelling", Toast.LENGTH_LONG).show();
                 }
             });
-        }
-        else
-        {
+        } else {
             inputStream = connection.getInputStream();
             sc = new Scanner(inputStream);
             sc.useDelimiter("\\A");
@@ -351,6 +344,7 @@ Uri uri=data.getData();
 
         entity.setMeaning_of_word(str);
         entity.setExample(example);
+        entity.setFav_meaning(0);
         entity.setName_of_meaning(entered_meaning);
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override

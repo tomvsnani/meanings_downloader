@@ -26,4 +26,6 @@ public interface Dao {
     @Query("SELECT *FROM Entity")
     public LiveData<List<Entity>> load_all_data();
 
+
+
 }

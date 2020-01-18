@@ -5,12 +5,12 @@
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="colorPrimary"> #1B123E</item>
-        <item name="colorPrimaryDark">#1B123E</item>
-        <item name="colorAccent">#555994</item>
-        <item name="colorControlHighlight">#ef6c00</item>
+        <item name="colorPrimary"> #40286c</item>
+        <item name="colorPrimaryDark">#40286c</item>
+        <item name="colorAccent">#ffffff</item>
+        <item name="colorControlHighlight">#a5d6a7</item>
 
-        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="colorControlNormal">#ffffff</item>
 
 
 

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-android:background="@drawable/shape_button"
+android:background="#e0e0e0"
         tools:context=".BlankFragment">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -24,43 +24,44 @@ android:background="@drawable/shape_button"
                 android:id="@+id/toolbar_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:titleTextColor="#cccccc"
+                app:titleTextColor="#e0e0e0"
                 >
 
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="380dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/shape_button"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/meaning"
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="60dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_weight="7"
-android:textColor="#ffffff"
-                android:textColorHint="#ffffff"
-                android:hint="Type here . . ."
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="Search Online Here . . . ."
+            android:textColorHint="#e0e0e0"
+                android:textColor="#ffffff"
+                android:layout_weight="9"
                 android:maxLines="1"
                 android:padding="16dp"
                 android:textStyle="italic" />
 
             <ImageButton
                 android:id="@+id/search"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="bottom"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+               android:layout_marginTop="10dp"
                 android:clickable="true"
                 android:src="@drawable/ic_search_black_24dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="16dp"
-
                 tools:targetApi="lollipop" />
         </LinearLayout>
 

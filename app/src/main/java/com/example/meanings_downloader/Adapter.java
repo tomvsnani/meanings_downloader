@@ -82,6 +82,10 @@ public class Adapter extends ListAdapter {
 
 
         ((Holder) holder).textview_meaning.setText(entity.getName_of_meaning());
+        if(entity.getFav_meaning()==0)
+        ((Holder)holder).fav_meaning_image.setImageResource(R.drawable.likes);
+        else
+            ((Holder)holder).fav_meaning_image.setImageResource(R.drawable.likesfill);
 
 
        /* if (!entity.getExample().isEmpty())
@@ -129,6 +133,7 @@ public class Adapter extends ListAdapter {
 
     public interface Clicklistener{
         void onclick(int adapterposition,Entity entity,View view,ProgressBar progressBar1);
+        void onclick();
     }
 
 }

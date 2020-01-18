@@ -1,6 +1,7 @@
 package com.example.meanings_downloader;
 
 
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
@@ -26,6 +27,19 @@ public class Entity {
     @ColumnInfo(name = "meaning")
     private String meaning_of_word;
     private String example;
+
+
+    public Integer getFav_meaning() {
+        return fav_meaning;
+    }
+
+    public void setFav_meaning(Integer fav_meaning) {
+        this.fav_meaning = fav_meaning;
+    }
+
+    @ColumnInfo(name="fav_meaning")
+
+    private Integer fav_meaning;
 
     public Entity(){};
 @Ignore
