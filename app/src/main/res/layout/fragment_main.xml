@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:openDrawer="start"
+    >
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e0e0e0">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#e0e0e0"
+        app:elevation="0dp"
+        >
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_main"
+            android:layout_margin="8dp"
+            android:background="@drawable/shape_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            app:titleTextColor="#e0e0e0"
+            app:title=" "
+            app:layout_scrollFlags="enterAlways|snap|scroll"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/shape_button"
+                android:orientation="horizontal"
+                >
+
+                <AutoCompleteTextView
+                    android:id="@+id/meaning"
+                    android:layout_width="300dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="9"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/search_online_here"
+                    android:inputType="text|textAutoCorrect"
+                    android:singleLine="true"
+                    android:imeOptions="actionSearch"
+                    android:padding="16dp"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#e0e0e0"
+                    android:textStyle="italic"
+                    android:autofillHints="" tools:targetApi="o"/>
+
+                <ImageButton
+                    android:id="@+id/search"
+                    style="?attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="@string/search_icon"
+                    android:focusable="true"
+                    android:src="@drawable/ic_search_black_24dp"
+                    />
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical"
+        android:background="#e0e0e0"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".MainFragment">
+
+
+<ProgressBar
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/progress"
+    android:visibility="gone"
+    android:layout_gravity="center"
+    android:indeterminateTint="@color/colorAccent"
+    android:indeterminate="true"
+    tools:targetApi="lollipop" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_marginTop="4dp"
+
+                />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:itemTextColor="#40286c"
+        app:menu="@menu/navigation_menu"
+        android:background="#e0e0e0"/>
+</androidx.drawerlayout.widget.DrawerLayout>

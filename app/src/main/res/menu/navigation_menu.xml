@@ -5,7 +5,7 @@
     <item android:id="@+id/random"
         android:title="random"/>
     <item android:id="@+id/music"
-        android:title="music"/>
+        android:title="@string/favourites"/>
     <item android:id="@+id/saved_meanings"
         android:title="saved_meanings"/>
 

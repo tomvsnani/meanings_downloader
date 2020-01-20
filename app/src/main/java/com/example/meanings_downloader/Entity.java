@@ -28,6 +28,43 @@ public class Entity {
     private String meaning_of_word;
     private String example;
 
+    public String getParts_of_speech() {
+        return Parts_of_speech;
+    }
+
+    public void setParts_of_speech(String parts_of_speech) {
+        Parts_of_speech = parts_of_speech;
+    }
+
+    public String getSound() {
+        return sound;
+    }
+
+    public void setSound(String sound) {
+        this.sound = sound;
+    }
+
+    public String getExtra1() {
+        return extra1;
+    }
+
+    public void setExtra1(String extra1) {
+        this.extra1 = extra1;
+    }
+
+    public String getExtra2() {
+        return extra2;
+    }
+
+    public void setExtra2(String extra2) {
+        this.extra2 = extra2;
+    }
+
+    private  String Parts_of_speech;
+    private String sound;
+    private String extra1;
+    private String extra2;
+
 
     public Integer getFav_meaning() {
         return fav_meaning;

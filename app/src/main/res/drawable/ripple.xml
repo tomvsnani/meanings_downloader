@@ -12,10 +12,7 @@
         android:shape="rectangle">
         <corners
             android:radius="5dp"/>
-        <stroke
-            android:color="#CCCCCC"
-            />
-       <solid android:color="#801B123E"/>
+       <solid android:color="#e0e0e0"/>
     </shape>
 </item>
 </ripple>

@@ -26,6 +26,7 @@ public interface Dao {
     @Query("SELECT *FROM Entity")
     public LiveData<List<Entity>> load_all_data();
 
-
+@Query("SELECT * FROM ENTITY WHERE fav_meaning=:fav_meaning_identifier")
+    public LiveData<List<Entity>> load_fav_meaning(int fav_meaning_identifier);
 
 }

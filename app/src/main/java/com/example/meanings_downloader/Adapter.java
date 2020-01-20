@@ -1,22 +1,15 @@
 package com.example.meanings_downloader;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.text.HtmlCompat;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,7 +19,8 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 public class Adapter extends ListAdapter {
-    Database database = Database.Database_create(new BlankFragment().getContext());
+    List<String> list = new ArrayList<>();
+    Database database = Database.Database_create(new MainFragment().getContext());
     public ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -44,26 +38,22 @@ public class Adapter extends ListAdapter {
 
         }
     };
-    private List<Entity> list = new ArrayList<>();
-    private Entity entity;
-    private Context context;
-    private RecyclerView recyclerView;
+    ImageView imageView;
     Clicklistener listener;
-    ProgressBar progressBar;
 
-    protected Adapter(Context context, RecyclerView recyclerView, MainActivity blankFragment, ProgressBar progressBar) {
+    private Entity entity;
+
+
+    protected Adapter( MainActivity blankFragment) {
 
         super(Entity.diffcall);
-        this.context = context;
-        this.recyclerView = recyclerView;
-        this.listener=blankFragment;
-        this.progressBar=progressBar;
+        this.listener = blankFragment;
+
     }
 
     @Override
     public void submitList(@Nullable List list) {
         super.submitList(list != null ? new ArrayList<>(list) : null);
-        // recyclerView.smoothScrollToPosition(0);
     }
 
     @NonNull
@@ -79,22 +69,15 @@ public class Adapter extends ListAdapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         entity = (Entity) getItem(position);
+        list.add(entity.getName_of_meaning());
+        Log.d("listsize",String.valueOf(list));
 
-
-        ((Holder) holder).textview_meaning.setText(entity.getName_of_meaning());
-        if(entity.getFav_meaning()==0)
-        ((Holder)holder).fav_meaning_image.setImageResource(R.drawable.likes);
+        String sound = "<small>" + entity.getSound() + "</small>";
+        ((Holder) holder).textview_meaning.setText(Html.fromHtml(entity.getName_of_meaning() + "  &#160   <small><sup><sup><font color=#cb32c9>" + entity.getParts_of_speech() + "</font></sup></sup>" + "</small>" + "    &ensp &ensp" + sound));
+        if (entity.getFav_meaning() == 0)
+            ((Holder) holder).fav_meaning_image.setImageResource(R.drawable.likes);
         else
-            ((Holder)holder).fav_meaning_image.setImageResource(R.drawable.likesfill);
-
-
-       /* if (!entity.getExample().isEmpty())
-            ( (Holder)holder).textView_example.setText(HtmlCompat.fromHtml("<b> "+context.getResources().getString(R.string.example)+"</b>"+"  "+entity.getExample(),0));
-        if (!entity.getMeaning_of_word().isEmpty())
-
-            ((Holder)holder).textview_meaning.setText(HtmlCompat.fromHtml("<b> "+context.getResources().getString(R.string.meaning)+"</b>"+"  "+entity.getMeaning_of_word(),0));
-
-        */
+            ((Holder) holder).fav_meaning_image.setImageResource(R.drawable.likesfill);
 
     }
 
@@ -108,7 +91,11 @@ public class Adapter extends ListAdapter {
     }
 
 
+    public interface Clicklistener {
+        void onclick(int adapterposition, Entity entity, View view);
 
+        void onclick(String extra);
+    }
 
     class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView fav_meaning_image;
@@ -118,7 +105,9 @@ public class Adapter extends ListAdapter {
             super(itemView);
             // textView_example=itemView.findViewById(R.id.textview_example);
             textview_meaning = itemView.findViewById(R.id.textview_meaning);
-            fav_meaning_image=itemView.findViewById(R.id.add_fav_meaning);
+            fav_meaning_image = itemView.findViewById(R.id.add_fav_meaning);
+            imageView = itemView.findViewById(R.id.audio_play);
+            imageView.setOnClickListener(this);
             fav_meaning_image.setOnClickListener(this);
             textview_meaning.setOnClickListener(this);
 
@@ -127,13 +116,8 @@ public class Adapter extends ListAdapter {
 
         @Override
         public void onClick(View v) {
-          listener.onclick(getAdapterPosition(),(Entity) getItem(getAdapterPosition()),v,progressBar);
+            listener.onclick(getAdapterPosition(), (Entity) getItem(getAdapterPosition()), v);
         }
-    }
-
-    public interface Clicklistener{
-        void onclick(int adapterposition,Entity entity,View view,ProgressBar progressBar1);
-        void onclick();
     }
 
 }

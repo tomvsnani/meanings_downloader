@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@androidx.room.Database(entities = {Entity.class},version = 3,exportSchema = false)
+@androidx.room.Database(entities = {Entity.class},version = 2,exportSchema = false)
 public abstract class Database extends RoomDatabase {
     private static Database INSTANCE;
     private static Object object=new Object();
@@ -23,7 +23,7 @@ database.execSQL("ALTER TABLE 'Entity' ADD COLUMN 'fav_meaning' INTEGER NOT NULL
     public static  Database Database_create(Context context){
         if(INSTANCE==null){
         synchronized (object){
-            INSTANCE= Room.databaseBuilder(context,Database.class,DATABASE_NAME).addMigrations(migration2_3).build() ;
+            INSTANCE= Room.databaseBuilder(context,Database.class,DATABASE_NAME).fallbackToDestructiveMigration().build() ;
         }
         }
         return INSTANCE;
