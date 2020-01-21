@@ -20,8 +20,8 @@ import java.util.concurrent.Executors;
 
 public class Adapter extends ListAdapter {
     List<String> list = new ArrayList<>();
-    Database database = Database.Database_create(new MainFragment().getContext());
-    public ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP, ItemTouchHelper.LEFT) {
+    private Database database = Database.Database_create(new MainFragment().getContext());
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -38,13 +38,14 @@ public class Adapter extends ListAdapter {
 
         }
     };
-    ImageView imageView;
-    Clicklistener listener;
+    private ImageView imageView;
+    private Clicklistener listener;
 
     private Entity entity;
+    private String[] divide_parts_of_speech;
 
 
-    protected Adapter( MainActivity blankFragment) {
+    Adapter(MainActivity blankFragment) {
 
         super(Entity.diffcall);
         this.listener = blankFragment;
@@ -53,7 +54,7 @@ public class Adapter extends ListAdapter {
 
     @Override
     public void submitList(@Nullable List list) {
-        super.submitList(list != null ? new ArrayList<>(list) : null);
+        super.submitList(list != null ? new ArrayList<Entity>(list) : null);
     }
 
     @NonNull
@@ -70,10 +71,9 @@ public class Adapter extends ListAdapter {
 
         entity = (Entity) getItem(position);
         list.add(entity.getName_of_meaning());
-        Log.d("listsize",String.valueOf(list));
-
+       divide_parts_of_speech=entity.getParts_of_speech().split(" ");
         String sound = "<small>" + entity.getSound() + "</small>";
-        ((Holder) holder).textview_meaning.setText(Html.fromHtml(entity.getName_of_meaning() + "  &#160   <small><sup><sup><font color=#cb32c9>" + entity.getParts_of_speech() + "</font></sup></sup>" + "</small>" + "    &ensp &ensp" + sound));
+        ((Holder) holder).textview_meaning.setText(Html.fromHtml(entity.getName_of_meaning() + "<small><small><sup><sup><font color=#cb32c9>" + (divide_parts_of_speech.length>1?divide_parts_of_speech[1]:divide_parts_of_speech[0]) + "</font></sup></sup>" + "</small></small>" + "    &ensp &ensp" + "<small><i>"+sound+"</i></small>"));
         if (entity.getFav_meaning() == 0)
             ((Holder) holder).fav_meaning_image.setImageResource(R.drawable.likes);
         else
@@ -101,7 +101,7 @@ public class Adapter extends ListAdapter {
         ImageView fav_meaning_image;
         TextView textview_meaning;
 
-        public Holder(@NonNull View itemView) {
+        Holder(@NonNull View itemView) {
             super(itemView);
             // textView_example=itemView.findViewById(R.id.textview_example);
             textview_meaning = itemView.findViewById(R.id.textview_meaning);

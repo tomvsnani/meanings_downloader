@@ -20,20 +20,21 @@
         android:tooltipText="swipe left to delete"
         android:text="@string/meaning"
         android:textColor="#616161"
-        android:textSize="18sp"
-        android:textStyle="italic"
-        android:gravity="bottom"
+        android:textSize="20sp"
+       android:gravity="center_vertical"
         android:clickable="true"
         android:focusable="true"
+        android:ellipsize="end"
+        android:maxLines="1"
        android:background="?attr/selectableItemBackground"/>
 
     <ImageView
-        android:layout_gravity="bottom"
+        android:layout_gravity="center_vertical"
         android:id="@+id/audio_play"
         android:tag="@string/audio_play_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="0.5"
         android:contentDescription="@string/audio_play_button"
         android:src="@drawable/ic_volume_up_black_24dp" />
 
@@ -42,9 +43,9 @@
         android:id="@+id/add_fav_meaning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="0.5"
         android:src="@drawable/likes"
-        android:layout_gravity="bottom"
+        android:layout_gravity="center_vertical"
         android:contentDescription="@string/likebutton"
         android:tag="@string/like"
         style=""

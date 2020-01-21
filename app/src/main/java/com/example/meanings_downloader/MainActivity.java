@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.Executors;
+
 
 public class MainActivity extends AppCompatActivity implements Adapter.Clicklistener, TextToSpeech.OnInitListener {
 
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.Clicklist
         container = findViewById(R.id.container);
         fragmentManager = getSupportFragmentManager();
         blankFragment = new MainFragment(this);
-        fragmentManager.beginTransaction().add(R.id.container, blankFragment, "first").addToBackStack("first").commit();
+        fragmentManager.beginTransaction().add(R.id.container, blankFragment, Constants.ADD_MAINADAPTER_TO_BACKSTACK).addToBackStack(Constants.ADD_MAINADAPTER_TO_BACKSTACK).commit();
         getSupportFragmentManager().addOnBackStackChangedListener(onBackStackChangedListener);
         database = Database.Database_create(this);
         random = new Random();
@@ -113,8 +114,8 @@ public class MainActivity extends AppCompatActivity implements Adapter.Clicklist
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                getSupportFragmentManager().beginTransaction().hide((Objects.requireNonNull(getSupportFragmentManager().findFragmentByTag("first")))).commit();
-                getSupportFragmentManager().beginTransaction().add(R.id.container, Card_Fragment.newInstance((entity.getMeaning_of_word()), entity.getExample(), "normal", MainActivity.this), "second").addToBackStack("second").commit();
+                getSupportFragmentManager().beginTransaction().hide((Objects.requireNonNull(getSupportFragmentManager().findFragmentByTag(Constants.ADD_MAINADAPTER_TO_BACKSTACK)))).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.container, Card_Fragment.newInstance((entity.getMeaning_of_word()), entity.getExample(), Constants.MAIN_ADAPTER_TO_CARD_VIEW, MainActivity.this), "second").addToBackStack("second").commit();
                 break;
             case R.id.audio_play:
 
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.Clicklist
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         textToSpeech.speak(entity.getName_of_meaning(), TextToSpeech.QUEUE_FLUSH, null, null);
                     } else {
-                        Toast.makeText(this, "Cannot Play audio. Playing Audio needs higher android version", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, Constants.CANNOT_PLAY_AUDIO, Toast.LENGTH_SHORT).show();
                     }
 
                     new Thread(new Runnable() {
@@ -140,8 +141,6 @@ public class MainActivity extends AppCompatActivity implements Adapter.Clicklist
                             ((ImageView) view).setImageResource(R.drawable.ic_volume_up_black_24dp);
                             view.setTag(getResources().getString(R.string.audio_play_button));
 
-
-                            //textToSpeech=null;
                         }
                     }).start();
 
@@ -154,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.Clicklist
 
                 break;
             case R.id.fav_textview_meaning:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, Card_Fragment.newInstance(entity.getMeaning_of_word(), entity.getExample(), "normal", this)).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, Card_Fragment.newInstance(entity.getMeaning_of_word(), entity.getExample(), Constants.MAIN_ADAPTER_TO_CARD_VIEW, this)).addToBackStack(null).commit();
         }
 
 
@@ -172,28 +171,29 @@ public class MainActivity extends AppCompatActivity implements Adapter.Clicklist
     public void onclick(String extra) {
         if (list_local.size() > 0) {
             switch (extra) {
-                case "favourite":
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,new Fav_fragment(list_local,this)).addToBackStack(null).commit();
+                case Constants.FROM_DRAWERVIEW_TO_CARD_VIEW:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new Fav_fragment(list_local, this)).addToBackStack(null).commit();
                     break;
-                case "card_mode":
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new Card_Fragment(list_local, "card", this)).commit();
+                case Constants.FROM_FAVOURITE_TO_CARD_VIEW:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new Card_Fragment(list_local, Constants.FROM_FAVOURITE_TO_CARD_VIEW, this)).commit();
                     break;
-                case "music":getSupportFragmentManager().beginTransaction().replace(R.id.container,new Fav_fragment(list_local,this)).commit();
+                case Constants.FROM_CARDVIEW_TO_FAVOURITE_VIEW:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new Fav_fragment(list_local, this)).commit();
 
 
             }
 
         } else
-            Toast.makeText(this, "You Have no Favourites", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, Constants.YOU_HAVE_NO_FAVOURITES, Toast.LENGTH_LONG).show();
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onBackPressed() {
-      //  getSupportFragmentManager().popBackStackImmediate("hey", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        //  getSupportFragmentManager().popBackStackImmediate("hey", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-        getSupportFragmentManager().beginTransaction().show((Objects.requireNonNull(getSupportFragmentManager().findFragmentByTag("first")))).commit();
+        getSupportFragmentManager().beginTransaction().show((Objects.requireNonNull(getSupportFragmentManager().findFragmentByTag(Constants.ADD_MAINADAPTER_TO_BACKSTACK)))).commit();
 
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             if (blankFragment.drawerLayout.isDrawerOpen(GravityCompat.START))

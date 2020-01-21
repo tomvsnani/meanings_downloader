@@ -7,16 +7,16 @@
     android:background="#e0e0e0"
     >
 
-<com.google.android.material.appbar.AppBarLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/appbar"
-    android:layout_gravity="top">
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar"/>
-</com.google.android.material.appbar.AppBarLayout>
+        android:id="@+id/appbar"
+        android:layout_gravity="top">
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar"/>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -52,13 +52,14 @@
 
         </RadioGroup>
 
-</LinearLayout>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="350dp"
         android:layout_height="350dp"
         android:layout_gravity="center"
+        android:id="@+id/inside_card_linear"
         android:background="@drawable/shape"
-       android:gravity="center"
+        android:gravity="center"
         android:layout_marginTop="90dp"
         android:orientation="vertical"
         tools:elevation="8dp">
@@ -97,7 +98,7 @@
         android:background="@color/colorAccent"
         android:id="@+id/next_prev_buttons"
         android:visibility="gone"
->
+        >
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -111,5 +112,18 @@
             style="?attr/buttonBarPositiveButtonStyle"
             android:text="@string/next"/>
     </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/write_own_content"
+        android:minHeight="150dp"
+        android:hint="@string/write_something_to_it_remember_in_your_words"
+        android:gravity="top"
+        android:padding="16dp"
+        android:textColorHint="#fa5788"
+        android:layout_margin="25dp"
+        android:background="@drawable/ripple"
+        />
 
 </LinearLayout>

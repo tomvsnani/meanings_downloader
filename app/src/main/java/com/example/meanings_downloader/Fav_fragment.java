@@ -18,15 +18,15 @@ import java.util.List;
 public class Fav_fragment extends Fragment implements View.OnClickListener {
 
 
-    RecyclerView recyclerView;
-    LinearLayoutManager linearLayout;
-    Fav_meaning_Adapter fav_meaning_adapter;
-    List<Entity> entities;
-    Adapter.Clicklistener clicklistener;
-    RadioButton favouriteRadioButton;
-    RadioButton cardRadioButton;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayout;
+    private Fav_meaning_Adapter fav_meaning_adapter;
+    private List<Entity> entities;
+    private Adapter.Clicklistener clicklistener;
+    private RadioButton favouriteRadioButton;
+    private RadioButton cardRadioButton;
 
-    public Fav_fragment(List<Entity> entities, Adapter.Clicklistener clicklistener) {
+    Fav_fragment(List<Entity> entities, Adapter.Clicklistener clicklistener) {
         this.entities = entities;
         this.clicklistener = clicklistener;
 
@@ -44,6 +44,13 @@ public class Fav_fragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = initialize_views(inflater, container);
+        favouriteRadioButton.setOnClickListener(this);
+        cardRadioButton.setOnClickListener(this);
+        return view;
+    }
+
+    private View initialize_views(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.fragment_favourite, container, false);
         recyclerView = view.findViewById(R.id.fav_recycler);
         linearLayout = new LinearLayoutManager(getContext());
@@ -53,8 +60,6 @@ public class Fav_fragment extends Fragment implements View.OnClickListener {
         recyclerView.setAdapter(fav_meaning_adapter);
         favouriteRadioButton = view.findViewById(R.id.favourite_mode);
         cardRadioButton = view.findViewById(R.id.card_mode);
-        favouriteRadioButton.setOnClickListener(this);
-        cardRadioButton.setOnClickListener(this);
         return view;
     }
 
@@ -64,7 +69,7 @@ public class Fav_fragment extends Fragment implements View.OnClickListener {
 
 
         if (v.getId() == R.id.card_mode) {
-            clicklistener.onclick("card_mode");
+            clicklistener.onclick(Constants.FROM_FAVOURITE_TO_CARD_VIEW);
         }
 
     }

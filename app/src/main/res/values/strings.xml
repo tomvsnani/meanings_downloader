@@ -35,6 +35,7 @@
     <string name="favourites">Favourites</string>
     <string name="simple_mode">Simple Mode</string>
     <string name="flash_card_mode">Flash Card Mode</string>
+    <string name="write_something_to_it_remember_in_your_words">Write to remember it in your words...</string>
 
     <string-array name="autoCompleteValues" >
         <item>Afghanistan</item>

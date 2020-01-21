@@ -20,6 +20,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.ActionMode;
@@ -62,17 +63,17 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class MainFragment extends Fragment implements AbsListView.MultiChoiceModeListener {
-    String entered_meaning;
-    Database database;
-    Adapter adapter;
+    private String entered_meaning;
+    private Database database;
+    private Adapter adapter;
     DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    ActionBarDrawerToggle actionBarDrawerToggle;
-    datepicker date;
-    Adapter.Clicklistener clicklistener;
-    Toolbar toolbar;
-    ProgressBar progressbar;
-    ArrayAdapter<String> arrayAdapter;
+    private NavigationView navigationView;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private datepicker date;
+    private Adapter.Clicklistener clicklistener;
+    private Toolbar toolbar;
+    private ProgressBar progressbar;
+    private ArrayAdapter<String> arrayAdapter;
     private Scanner sc;
     private AutoCompleteTextView editText;
     private View v;
@@ -86,7 +87,7 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
     private LinearLayoutManager linearLayoutManager;
 
 
-    public MainFragment(Adapter.Clicklistener clicklistener) {
+    MainFragment(Adapter.Clicklistener clicklistener) {
         this.clicklistener = clicklistener;
     }
 
@@ -98,20 +99,30 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        v = inflater.inflate(R.layout.fragment_main, container, false);
-        button = v.findViewById(R.id.search);
-        editText = v.findViewById(R.id.meaning);
-        progressbar = v.findViewById(R.id.progress);
-        recyclerView = v.findViewById(R.id.recycler_view);
-        drawerLayout = v.findViewById(R.id.drawer);
-        navigationView = v.findViewById(R.id.navigation);
-        toolbar = v.findViewById(R.id.toolbar_main);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, R.string.opened, R.string.closed);
+        initialize_views(inflater, container);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
-
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         actionBarDrawerToggle.syncState();
+        initialize_clickListener();
+        getDataFromDatabase();
+        initialize_recyclerview();
+        return v;
+    }
+
+    private void initialize_recyclerview() {
+        linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        adapter = new Adapter( (MainActivity) getActivity());
+        recyclerView.setAdapter(adapter);
+        registerForContextMenu(recyclerView);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(adapter.simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+        arrayAdapter=new ArrayAdapter<>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_activated_1,adapter.list);
+        editText.setAdapter(arrayAdapter);
+    }
+
+    private void initialize_clickListener() {
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -120,7 +131,6 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
                     entity = new Entity();
                     set_url();
                 }
-
                 return false;
             }
         });
@@ -152,22 +162,23 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
                     startActivityForResult(intent1, 2);
                 }
                 if (item.getItemId() == R.id.music) {
-                    clicklistener.onclick("favourite");
+                    clicklistener.onclick(Constants.FROM_DRAWERVIEW_TO_CARD_VIEW);
                 }
                 return true;
             }
         });
-        getDataFromDatabase();
-        linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        adapter = new Adapter( (MainActivity) getActivity());
-        recyclerView.setAdapter(adapter);
-        registerForContextMenu(recyclerView);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(adapter.simpleCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-        arrayAdapter=new ArrayAdapter<>(getActivity().getApplicationContext(),android.R.layout.simple_spinner_item,adapter.list);
-        editText.setAdapter(arrayAdapter);
-        return v;
+    }
+
+    private void initialize_views(LayoutInflater inflater, ViewGroup container) {
+        v = inflater.inflate(R.layout.fragment_main, container, false);
+        button = v.findViewById(R.id.search);
+        editText = v.findViewById(R.id.meaning);
+        progressbar = v.findViewById(R.id.progress);
+        recyclerView = v.findViewById(R.id.recycler_view);
+        drawerLayout = v.findViewById(R.id.drawer);
+        navigationView = v.findViewById(R.id.navigation);
+        toolbar = v.findViewById(R.id.toolbar_main);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, R.string.opened, R.string.closed);
     }
 
     @Override
@@ -178,7 +189,7 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
     }
 
 
-    public void hide_keyboard() {
+    private void hide_keyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
@@ -188,7 +199,6 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
         if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                Log.d("givenuri", data.getData().toString());
                 Uri uri = data.getData();
                 intent.setDataAndType(data.getData(), "audio/mp3");
                 //  intent.putExtra(Intent.EXTRA_STREAM,uri);
@@ -234,7 +244,7 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
     }
 
 
-    public void set_url()  {
+    private void set_url()  {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -265,11 +275,6 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
         });
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putString("action_bar_toggle",actionBarDrawerToggle.toString());
-        super.onSaveInstanceState(outState);
-    }
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -280,7 +285,7 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
                 @Override
                 public void run() {
                     progressbar.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), "No meaning found. Please Check the spelling", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), Constants.NO_MEANING_FOUND, Toast.LENGTH_LONG).show();
                 }
             });
         } else {
@@ -291,7 +296,8 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
 
 
             final String Json_raw = sc.next();
-            String arr[]=JsonParser.parser(Json_raw);
+            String[] arr = JsonParser.parser(Json_raw);
+            assert arr != null;
             final String definition = arr[0];
             final String example = arr[1];
             getActivity().runOnUiThread(new Runnable() {
@@ -306,7 +312,7 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getContext(), "No meaning found. Please Check the spelling", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), Constants.NO_MEANING_FOUND, Toast.LENGTH_LONG).show();
                     }
                 });
             connection.disconnect();
@@ -314,7 +320,7 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
     }
 
 
-    public void storeInDatabase(String str, String example,String parts_of_speech,String sound) {
+    private void storeInDatabase(String str, String example, String parts_of_speech, String sound) {
         entity.setMeaning_of_word(str);
         entity.setParts_of_speech(parts_of_speech);
         entity.setSound(sound);
@@ -332,7 +338,7 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
         });
     }
 
-    public void getDataFromDatabase() {
+    private void getDataFromDatabase() {
         list = database.dao().load_all_data();
         list.observe(getViewLifecycleOwner(), new Observer<List<Entity>>() {
             @Override
