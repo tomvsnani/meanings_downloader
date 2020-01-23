@@ -1,9 +1,6 @@
-package com.example.meanings_downloader;
-
-import android.util.Log;
+package com.example.meanings_downloader.Database;
 
 import androidx.lifecycle.LiveData;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;

@@ -2,26 +2,38 @@ package com.example.meanings_downloader;
 
 import android.text.Html;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.meanings_downloader.Database.Database;
+import com.example.meanings_downloader.Database.Entity;
+import com.example.meanings_downloader.MainActivity;
+import com.example.meanings_downloader.MainFragment;
+import com.example.meanings_downloader.R;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
 public class Adapter extends ListAdapter {
-    List<String> list = new ArrayList<>();
+    public List<String> list = new ArrayList<>();
     private Database database = Database.Database_create(new MainFragment().getContext());
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP, ItemTouchHelper.LEFT) {
+    public ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -38,14 +50,15 @@ public class Adapter extends ListAdapter {
 
         }
     };
-    private ImageView imageView;
+    private ImageButton imageView;
+
     private Clicklistener listener;
 
     private Entity entity;
     private String[] divide_parts_of_speech;
 
 
-    Adapter(MainActivity blankFragment) {
+    public Adapter(MainActivity blankFragment) {
 
         super(Entity.diffcall);
         this.listener = blankFragment;
@@ -71,13 +84,14 @@ public class Adapter extends ListAdapter {
 
         entity = (Entity) getItem(position);
         list.add(entity.getName_of_meaning());
-       divide_parts_of_speech=entity.getParts_of_speech().split(" ");
-        String sound = "<small>" + entity.getSound() + "</small>";
-        ((Holder) holder).textview_meaning.setText(Html.fromHtml(entity.getName_of_meaning() + "<small><small><sup><sup><font color=#cb32c9>" + (divide_parts_of_speech.length>1?divide_parts_of_speech[1]:divide_parts_of_speech[0]) + "</font></sup></sup>" + "</small></small>" + "    &ensp &ensp" + "<small><i>"+sound+"</i></small>"));
+
+
+        ((Holder) holder).textView_meaning.setText(Html.fromHtml(entity.getName_of_meaning()));
+        ((Holder) holder).parts_of_speech_textView.setText(Html.fromHtml(" ( <small><small><font color=#cb32c9>" + entity.getParts_of_speech() + "</font>" + "</small></small>)"));
         if (entity.getFav_meaning() == 0)
-            ((Holder) holder).fav_meaning_image.setImageResource(R.drawable.likes);
+            ((Holder) holder).fav_meaning_image_textView.setImageResource(R.drawable.likes);
         else
-            ((Holder) holder).fav_meaning_image.setImageResource(R.drawable.likesfill);
+            ((Holder) holder).fav_meaning_image_textView.setImageResource(R.drawable.likesfill);
 
     }
 
@@ -92,24 +106,41 @@ public class Adapter extends ListAdapter {
 
 
     public interface Clicklistener {
-        void onclick(int adapterposition, Entity entity, View view);
+        public void onclick(int adapterposition, Entity entity, View view);
 
-        void onclick(String extra);
+        public void onclick(String extra);
     }
 
     class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView fav_meaning_image;
-        TextView textview_meaning;
+        ImageButton fav_meaning_image_textView;
+        TextView textView_meaning;
+        TextView parts_of_speech_textView;
+        LinearLayout rootLayout;
+        private ImageButton shareButton;
+
 
         Holder(@NonNull View itemView) {
             super(itemView);
             // textView_example=itemView.findViewById(R.id.textview_example);
-            textview_meaning = itemView.findViewById(R.id.textview_meaning);
-            fav_meaning_image = itemView.findViewById(R.id.add_fav_meaning);
+            textView_meaning = itemView.findViewById(R.id.textview_meaning);
+            shareButton=itemView.findViewById(R.id.share);
+            parts_of_speech_textView = itemView.findViewById(R.id.partsof_speech_text_view);
+            fav_meaning_image_textView = itemView.findViewById(R.id.add_fav_meaning);
+            rootLayout = itemView.findViewById(R.id.rootlayout_main_fragment);
+            rootLayout.setOnClickListener(this);
             imageView = itemView.findViewById(R.id.audio_play);
+            shareButton.setOnClickListener(this);
+            itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+                @Override
+                public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                    MainFragment.get((Entity) getCurrentList().get(getAdapterPosition()));
+                    menu.add(Menu.NONE, v.getId(), Menu.FIRST, "Share");
+                    menu.add(Menu.NONE, v.getId(), Menu.FIRST, "Add to unknown words");
+                }
+            });
             imageView.setOnClickListener(this);
-            fav_meaning_image.setOnClickListener(this);
-            textview_meaning.setOnClickListener(this);
+            fav_meaning_image_textView.setOnClickListener(this);
+            //  textView_meaning.setOnClickListener(this);
 
 
         }

@@ -7,12 +7,12 @@
 
 
     tools:targetApi="lollipop">
-<item>
-    <shape
-        android:shape="rectangle">
-        <corners
-            android:radius="8dp"/>
-       <solid android:color="#ffffff"/>
-    </shape>
-</item>
+    <item>
+        <shape
+            android:shape="rectangle">
+            <corners
+                android:radius="8dp"/>
+            <solid android:color="#e0e0e0"/>
+        </shape>
+    </item>
 </ripple>

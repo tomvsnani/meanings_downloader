@@ -1,9 +1,7 @@
-package com.example.meanings_downloader;
+package com.example.meanings_downloader.Database;
 
 
-import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.ColumnInfo;
 import androidx.room.Ignore;
@@ -28,6 +26,24 @@ public class Entity {
     private String meaning_of_word;
     private String example;
 
+    public String getUserTypedData() {
+        return userTypedData;
+    }
+
+    public void setUserTypedData(String userTypedData) {
+        this.userTypedData = userTypedData;
+    }
+
+    public String getExtra1() {
+        return extra1;
+    }
+
+    public void setExtra1(String extra1) {
+        this.extra1 = extra1;
+    }
+
+    private String userTypedData;
+
     public String getParts_of_speech() {
         return Parts_of_speech;
     }
@@ -44,13 +60,7 @@ public class Entity {
         this.sound = sound;
     }
 
-    public String getExtra1() {
-        return extra1;
-    }
 
-    public void setExtra1(String extra1) {
-        this.extra1 = extra1;
-    }
 
     public String getExtra2() {
         return extra2;

@@ -36,16 +36,9 @@
     <string name="simple_mode">Simple Mode</string>
     <string name="flash_card_mode">Flash Card Mode</string>
     <string name="write_something_to_it_remember_in_your_words">Write to remember it in your words...</string>
+    <string name="share_button">share_button</string>
+    <string name="quiz_mode">quiz_mode</string>
+    <string name="learning_mode">learning_mode</string>
 
-    <string-array name="autoCompleteValues" >
-        <item>Afghanistan</item>
-        <item>Albania</item>
-        <item>Algeria</item>
-        <item>American Samoa</item>
-        <item>Andorra</item>
-        <item>Angola</item>
-        <item>Anguilla</item>
-        <item>Antarctica</item>
 
-    </string-array>
 </resources>

@@ -6,48 +6,87 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="25dp"
-    android:clickable="true"
-    android:focusable="true"
-    >
 
+    android:id="@+id/rootlayout_main_fragment"
+    android:background="@drawable/mainfragment_ripple"
+  android:focusable="false"
+    >
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="8"
+    android:orientation="vertical">
     <TextView
         android:id="@+id/textview_meaning"
-        android:layout_width="0dp"
+
         android:layout_height="50dp"
-        android:layout_weight="8"
+
+        android:ellipsize="end"
+        android:focusable="false"
+        android:gravity="center_vertical"
+        android:maxLines="1"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:tooltipText="swipe left to delete"
         android:text="@string/meaning"
         android:textColor="#616161"
         android:textSize="20sp"
-       android:gravity="center_vertical"
-        android:clickable="true"
-        android:focusable="true"
-        android:ellipsize="end"
-        android:maxLines="1"
-       android:background="?attr/selectableItemBackground"/>
+        android:textStyle="italic"
+        android:layout_width="match_parent" />
 
-    <ImageView
-        android:layout_gravity="center_vertical"
+
+    <TextView
+        android:id="@+id/partsof_speech_text_view"
+     android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:gravity="left"
+        android:text="v"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textview_meaning"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingStart="5dp" />
+</LinearLayout>
+
+    <ImageButton
         android:id="@+id/audio_play"
-        android:tag="@string/audio_play_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:contentDescription="@string/audio_play_button"
-        android:src="@drawable/ic_volume_up_black_24dp" />
-
-
-    <ImageView
-        android:id="@+id/add_fav_meaning"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:src="@drawable/likes"
+        style="?attr/borderlessButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
+        android:layout_weight="2"
+        android:contentDescription="@string/audio_play_button"
+        android:focusable="false"
+        android:padding="10dp"
+        android:src="@drawable/ic_volume_up_black_24dp"
+        android:tag="@string/audio_play_button" />
+
+    <ImageButton
+        android:id="@+id/add_fav_meaning"
+        style="?attr/borderlessButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+
+        android:layout_weight="2"
         android:contentDescription="@string/likebutton"
-        android:tag="@string/like"
-        style=""
-       android:background="@android:color/transparent"/>
+        android:focusable="false"
+        android:src="@drawable/likes"
+        android:tag="@string/like" />
+
+    <ImageButton
+        android:id="@+id/share"
+        style="?attr/borderlessButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="2"
+        android:contentDescription="@string/share_button"
+        android:focusable="false"
+        android:padding="10dp"
+        android:src="@drawable/ic_share_black_24dp"
+        android:tag="@string/audio_play_button" />
 </LinearLayout>

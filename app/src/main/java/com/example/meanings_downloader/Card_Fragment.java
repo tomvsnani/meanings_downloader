@@ -3,6 +3,7 @@ package com.example.meanings_downloader;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -17,13 +18,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 
+import com.example.meanings_downloader.Database.Database;
+import com.example.meanings_downloader.Database.Entity;
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 
 public class Card_Fragment extends Fragment implements View.OnClickListener {
@@ -45,12 +51,16 @@ public class Card_Fragment extends Fragment implements View.OnClickListener {
     private String example;
     private TextView meaningview;
     private TextView example_view;
-    private LinearLayout radioButtonsLinear;
+    private ScrollView scrollView;
+    private RadioGroup radioButtonsLinear;
     private LinearLayout linearLayout;
     private AppBarLayout appBarLayout;
     private RadioButton favRdaioButton ;
+    private  static Entity entity;
     private RadioButton cardRdaioButton;
     private Toolbar toolbar;
+    Database database;
+    String user_written_data="";
     boolean opened=false;
 
 
@@ -64,7 +74,7 @@ public class Card_Fragment extends Fragment implements View.OnClickListener {
         Card_Fragment.clicklistener = clicklistener;
     }
 
-    static Card_Fragment newInstance(String param1, String param2, String extra, Adapter.Clicklistener clicklistener) {
+    static Card_Fragment newInstance(String param1, String param2, String extra, Adapter.Clicklistener clicklistener, Entity entiy) {
         Log.d("clicker", "clickededdee");
         Card_Fragment fragment = new Card_Fragment();
         Card_Fragment.clicklistener = clicklistener;
@@ -73,6 +83,7 @@ public class Card_Fragment extends Fragment implements View.OnClickListener {
         args.putString(ARG_PARAM2, param2);
         args.putString(Constants.KEY_TO_CHECK_EXTRAFIELD_IN_CARDVIEW, extra);
         fragment.setArguments(args);
+        entity=entiy;
         return fragment;
     }
 
@@ -84,6 +95,8 @@ public class Card_Fragment extends Fragment implements View.OnClickListener {
             example = getArguments().getString(ARG_PARAM2);
             extra = getArguments().getString(Constants.KEY_TO_CHECK_EXTRAFIELD_IN_CARDVIEW);
             setHasOptionsMenu(true);
+            database=Database.Database_create(getActivity().getApplicationContext());
+
 
         }
 
@@ -108,22 +121,22 @@ public class Card_Fragment extends Fragment implements View.OnClickListener {
             example = "<b> <h4> Example : </h4> </b> " + entities.get(0).getExample() + "";
             meaningview.setText(meaning);
             example_view.setText(example);
-            writeOwnWords.setVisibility(View.GONE);
+
 
 
         } else if (extra.equals(Constants.MAIN_ADAPTER_TO_CARD_VIEW)) {
-            linearLayout.setVisibility(View.GONE);
-            radioButtonsLinear.setVisibility(View.GONE);
-            writeOwnWords.setVisibility(View.VISIBLE);
+
             set_textview(meaning,example);
+            radioButtonsLinear.setVisibility(View.GONE);
+
         } if(extra.equals(Constants.FROM_FAVOURITE_TO_CARD_VIEW)) {
 
             Collections.shuffle(entities);
             appBarLayout.setVisibility(View.GONE);
             linearLayout.setVisibility(View.VISIBLE);
             radioButtonsLinear.setVisibility(View.VISIBLE);
+            writeOwnWords.setVisibility(View.INVISIBLE);
             meaningview.setVisibility(View.GONE);
-            writeOwnWords.setVisibility(View.GONE);
             inside_card_linear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -131,7 +144,7 @@ public class Card_Fragment extends Fragment implements View.OnClickListener {
                    if(!opened) {
                        meaningview.setVisibility(View.VISIBLE);
                        linearLayout.setVisibility(View.GONE);
-                       radioButtonsLinear.setVisibility(View.GONE);
+                       radioButtonsLinear.setVisibility(View.INVISIBLE);
                        set_textview(entities.get(count_next_pressed).getMeaning_of_word(), entities.get(count_next_pressed).getExample());
                        opened=true;
                    }
@@ -155,13 +168,31 @@ public class Card_Fragment extends Fragment implements View.OnClickListener {
 
         return v;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        writeOwnWords.setSelection(writeOwnWords.getText().toString().length());
+
+    }
+
     public void set_only_example_view_text() {
         String exampl = " <h2>"+ entities.get(count_next_pressed).getName_of_meaning()+"</h1>";
         example_view.setText(Html.fromHtml(exampl));
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(entity!=null && !entity.getUserTypedData().equals(""))
+        {
 
-    public void set_textview(String meaning,String example) {
+            writeOwnWords.setText( entity.getUserTypedData());
+        }
+    }
+
+    public void set_textview(String meaning, String example) {
         String meanin = "<h1>Meaning :</h1> " +"<h4><i>"+ meaning+"</h4></i>";
         Log.d("meaning",meaning);
         String exampl = "<h2>Example :</h2> " +"<h5><i>"+ example+"</h5></i>";
@@ -169,22 +200,47 @@ public class Card_Fragment extends Fragment implements View.OnClickListener {
         example_view.setText(Html.fromHtml(exampl));
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        user_written_data=writeOwnWords.getText().toString();
+        if(!user_written_data.equals("") && entity!=null  && database!=null) {
+            entity.setUserTypedData(writeOwnWords.getText().toString());
+            Executors.newSingleThreadExecutor().execute(new Runnable() {
+                @Override
+                public void run() {
+                    database.dao().update(entity);
+                }
+            });
+        }
+
+    }
+
     private View initialize_views(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(R.layout.fragment_cardview, container, false);
-        meaningview = v.findViewById(R.id.saved_meanings);
-        writeOwnWords=v.findViewById(R.id.write_own_content);
-        example_view = v.findViewById(R.id.example);
-        linearLayout = v.findViewById(R.id.next_prev_buttons);
-        radioButtonsLinear = v.findViewById(R.id.linearLayout);
-        next = v.findViewById(R.id.next);
-        previous = v.findViewById(R.id.previous);
-        appBarLayout = v.findViewById(R.id.appbar);
-        inside_card_linear=v.findViewById(R.id.inside_card_linear);
-        favRdaioButton = v.findViewById(R.id.favourite_mode_in_card);
-        cardRdaioButton = v.findViewById(R.id.card_mode_in_card);
-        favRdaioButton.setOnClickListener(this);
-        cardRdaioButton.setOnClickListener(this);
-        toolbar = v.findViewById(R.id.toolbar);
+            linearLayout = v.findViewById(R.id.next_prev_buttons);
+            scrollView=v.findViewById(R.id.scroll_view);
+            radioButtonsLinear = v.findViewById(R.id.radioGRoup);
+            next = v.findViewById(R.id.next);
+            previous = v.findViewById(R.id.previous);
+            appBarLayout = v.findViewById(R.id.appbar);
+            inside_card_linear=v.findViewById(R.id.inside_card_linear);
+            favRdaioButton = v.findViewById(R.id.favourite_mode_in_card);
+            cardRdaioButton = v.findViewById(R.id.card_mode_in_card);
+            favRdaioButton.setOnClickListener(this);
+            cardRdaioButton.setOnClickListener(this);
+            toolbar = v.findViewById(R.id.toolbar);
+
+
+
+            meaningview = v.findViewById(R.id.saved_meanings);
+            writeOwnWords=v.findViewById(R.id.write_own_content);
+            example_view = v.findViewById(R.id.example);
+
+
+
+
+
         return v;
     }
 
@@ -198,7 +254,7 @@ public class Card_Fragment extends Fragment implements View.OnClickListener {
     public void onStart() {
         super.onStart();
 
-
+if(!extra.equals(Constants.MAIN_ADAPTER_TO_CARD_VIEW))
         initialize_prev_next_listeners();
 
     }

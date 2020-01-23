@@ -1,4 +1,4 @@
-package com.example.meanings_downloader;
+package com.example.meanings_downloader.Database;
 
 import android.content.Context;
 
@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@androidx.room.Database(entities = {Entity.class},version = 2,exportSchema = false)
+@androidx.room.Database(entities = {Entity.class},version = 1,exportSchema = false)
 public abstract class Database extends RoomDatabase {
     private static Database INSTANCE;
     private static Object object=new Object();

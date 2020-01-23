@@ -55,7 +55,7 @@ public class JsonParser {
                     definition = definition.append(i + 1).append(". ").append(string[i]).append("<br/>");
                     i++;
                 }
-                if (!definition.toString().equals(""))
+                if (!definition.toString().equals("") )
 
                     return    new String[]{definition.toString(), example_String, jsonArray_String,sound};
 

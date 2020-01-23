@@ -1,66 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
     android:background="#e0e0e0"
-    >
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/appbar"
-        android:layout_gravity="top">
-        <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/toolbar"/>
-    </com.google.android.material.appbar.AppBarLayout>
+    android:id="@+id/scroll_view"
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal"
-        >
-
-
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
-
-            <RadioButton
-                android:id="@+id/favourite_mode_in_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/simple_mode"
-                />
-
-            <RadioButton
-                android:id="@+id/card_mode_in_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:text="@string/flash_card_mode"/>
-
-        </RadioGroup>
-
-    </LinearLayout>
+        android:orientation="vertical"
+>
+        <include layout="@layout/app_bar_layout" />
+        <include layout="@layout/radio_buttons"/>
     <LinearLayout
+        android:id="@+id/inside_card_linear"
         android:layout_width="350dp"
         android:layout_height="350dp"
-        android:layout_gravity="center"
-        android:id="@+id/inside_card_linear"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginRight="31dp"
         android:background="@drawable/shape"
         android:gravity="center"
-        android:layout_marginTop="90dp"
         android:orientation="vertical"
         tools:elevation="8dp">
 
@@ -69,9 +36,9 @@
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
             android:gravity="center"
             tools:text="meaning" />
 
@@ -79,51 +46,22 @@
             android:id="@+id/example"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:gravity="center"
             android:linksClickable="true"
-            android:textColorLink="#40286c"
-            />
+            android:textColorLink="#40286c" />
 
     </LinearLayout>
+    <include layout="@layout/next_prev_buttons"/>
+    <include layout="@layout/second_card_layout"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"
-        android:orientation="horizontal"
-        style="?android:attr/buttonBarStyle"
-        android:background="@color/colorAccent"
-        android:id="@+id/next_prev_buttons"
-        android:visibility="gone"
-        >
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/previous"
-            style="?attr/buttonBarNegativeButtonStyle"
-            android:text="@string/previous"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/next"
-            style="?attr/buttonBarPositiveButtonStyle"
-            android:text="@string/next"/>
-    </LinearLayout>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/write_own_content"
-        android:minHeight="150dp"
-        android:hint="@string/write_something_to_it_remember_in_your_words"
-        android:gravity="top"
-        android:padding="16dp"
-        android:textColorHint="#fa5788"
-        android:layout_margin="25dp"
-        android:background="@drawable/ripple"
-        />
+
+
+
 
 </LinearLayout>
+
+
+</ScrollView>

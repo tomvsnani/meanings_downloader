@@ -1,16 +1,15 @@
 package com.example.meanings_downloader;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.meanings_downloader.Database.Entity;
 
 
 public class Fav_meaning_Adapter extends ListAdapter<Entity,RecyclerView.ViewHolder>
@@ -55,7 +54,7 @@ class viewholder extends  RecyclerView.ViewHolder implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        Log.d("clicker","clicked");
+
         clicklistener.onclick(getAdapterPosition(),getItem(getAdapterPosition()),v);
     }
 }

@@ -7,8 +7,8 @@
         <item name="windowActionBar">false</item>
         <item name="colorPrimary"> #40286c</item>
         <item name="colorPrimaryDark">#40286c</item>
-        <item name="colorAccent">#40286c</item>
-        <item name="colorControlHighlight">#a5d6a7</item>
+
+        <item name="colorControlHighlight">#f8bbd0</item>
 
         <item name="colorControlNormal">#ffffff</item>
 
