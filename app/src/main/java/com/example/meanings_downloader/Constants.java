@@ -12,6 +12,8 @@ public class Constants
     static final String YOU_HAVE_NO_FAVOURITES="You Have no Favourites";
     static final String NO_MEANING_FOUND="No meaning found. Please Check the spelling";
     static final String ADD_MAINADAPTER_TO_BACKSTACK="MAIN ADAPTER BACK STACK";
+    static final String LEARN_FRAGMENT="LEARN FRAGMENT";
+
 
 
 

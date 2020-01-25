@@ -11,11 +11,7 @@
     android:background="@drawable/mainfragment_ripple"
   android:focusable="false"
     >
-<LinearLayout
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="8"
-    android:orientation="vertical">
+
     <TextView
         android:id="@+id/textview_meaning"
 
@@ -31,7 +27,8 @@
         android:textColor="#616161"
         android:textSize="20sp"
         android:textStyle="italic"
-        android:layout_width="match_parent" />
+        android:layout_weight="6"
+        android:layout_width="0dp" />
 
 
     <TextView
@@ -48,8 +45,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textview_meaning"
         app:layout_constraintTop_toTopOf="parent"
-        android:paddingStart="5dp" />
-</LinearLayout>
+        android:paddingStart="5dp"
+        android:visibility="gone"/>
+
 
     <ImageButton
         android:id="@+id/audio_play"
@@ -74,7 +72,7 @@
         android:layout_weight="2"
         android:contentDescription="@string/likebutton"
         android:focusable="false"
-        android:src="@drawable/likes"
+        android:src="@drawable/likes_on_itemview"
         android:tag="@string/like" />
 
     <ImageButton

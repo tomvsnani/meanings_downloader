@@ -89,7 +89,7 @@ public class Adapter extends ListAdapter {
         ((Holder) holder).textView_meaning.setText(Html.fromHtml(entity.getName_of_meaning()));
         ((Holder) holder).parts_of_speech_textView.setText(Html.fromHtml(" ( <small><small><font color=#cb32c9>" + entity.getParts_of_speech() + "</font>" + "</small></small>)"));
         if (entity.getFav_meaning() == 0)
-            ((Holder) holder).fav_meaning_image_textView.setImageResource(R.drawable.likes);
+            ((Holder) holder).fav_meaning_image_textView.setImageResource(R.drawable.likes_on_itemview);
         else
             ((Holder) holder).fav_meaning_image_textView.setImageResource(R.drawable.likesfill);
 

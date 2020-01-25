@@ -1,4 +1,4 @@
-package com.example.meanings_downloader.Database;
+package com.example.meanings_downloader;
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,11 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.meanings_downloader.R;
 
 
-public class Learning_Module extends Fragment {
-
+public class Test_started_fragment extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -24,14 +24,21 @@ public class Learning_Module extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public Learning_Module() {
-
+    public Test_started_fragment() {
+        // Required empty public constructor
     }
 
-
-
-    public static Learning_Module newInstance(String param1, String param2) {
-        Learning_Module fragment = new Learning_Module();
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment Test_started_fragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static Test_started_fragment newInstance(String param1, String param2) {
+        Test_started_fragment fragment = new Test_started_fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -52,7 +59,7 @@ public class Learning_Module extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_learning__module, container, false);
+        return inflater.inflate(R.layout.fragment_test_started_fragment, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -79,7 +86,16 @@ public class Learning_Module extends Fragment {
         mListener = null;
     }
 
-
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

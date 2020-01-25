@@ -39,6 +39,20 @@
     <string name="share_button">share_button</string>
     <string name="quiz_mode">quiz_mode</string>
     <string name="learning_mode">learning_mode</string>
+    <string-array name="num_of_words_to_learn">
+        <item>15</item>
+        <item>20</item>
+        <item>35</item>
+        <item>50</item>
+
+    </string-array>
+    <string-array name="select_category_of_words_to_display">
+        <item>All</item>
+        <item>From Favourites</item>
+        <item>From Difficult</item>
+
+
+    </string-array>
 
 
 </resources>

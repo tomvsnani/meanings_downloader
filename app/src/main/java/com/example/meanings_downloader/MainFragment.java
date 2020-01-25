@@ -69,17 +69,15 @@ import static android.app.Activity.RESULT_OK;
 
 public class MainFragment extends Fragment implements AbsListView.MultiChoiceModeListener {
     public static Entity share_id_of_entity;
-    DrawerLayout drawerLayout;
-    List<Drawable> bootombar_list = new ArrayList<android.graphics.drawable.Drawable>();
-    RecyclerView bottom_recyclerview;
+
+
+    LinearLayout bottom_bar_LinearLayout;
     LinearLayoutManager bottom_linearlayout;
-    bottom_recycler_adapter bottom_recycler_adapter;
     private String entered_meaning;
     private Database database;
     private Adapter adapter;
     private ConstraintLayout rootlayout;
-    private NavigationView navigationView;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
+
     private datepicker date;
     private Adapter.Clicklistener clicklistener;
     private Toolbar toolbar;
@@ -89,17 +87,21 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
     private AutoCompleteTextView editText;
     private View v;
     private URL url;
-    private ImageButton button;
+    private ImageButton searchButton;
     private HttpURLConnection connection;
     private InputStream inputStream;
     private LiveData<List<Entity>> list;
     private Entity entity;
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
+    ActionBarDrawerToggle actionBarDrawerToggle;
+    DrawerLayout drawerLayout;
 
 
-    MainFragment(Adapter.Clicklistener clicklistener) {
+    MainFragment(Adapter.Clicklistener clicklistener,ActionBarDrawerToggle actionBarDrawerToggle,DrawerLayout drawerLayout) {
         this.clicklistener = clicklistener;
+        this.actionBarDrawerToggle=actionBarDrawerToggle;
+        this.drawerLayout=drawerLayout;
     }
 
     public MainFragment() {
@@ -117,12 +119,16 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
                              Bundle savedInstanceState) {
 
         initialize_views(inflater, container);
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+
+
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-        initialize_clickListener();
+
         getDataFromDatabase();
+
         initialize_recyclerview();
         return v;
     }
@@ -131,11 +137,7 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         adapter = new Adapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
-        bottom_recycler_adapter = new bottom_recycler_adapter(bootombar_list, getResources().getDisplayMetrics().widthPixels / (bootombar_list.size()));
         bottom_linearlayout = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        bottom_recyclerview.setAdapter(bottom_recycler_adapter);
-        bottom_recyclerview.setLayoutManager(bottom_linearlayout);
-
 
 
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -160,53 +162,21 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
             }
         });
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.date) {
-                    //  date.setCancelable(false);
-                    // date.show(getFragmentManager(), "Date");
-                    final test test = new test();
-                    Executors.newSingleThreadExecutor().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                test.create(getContext());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                }
-                if (item.getItemId() == R.id.random) {
-                    Log.d("nothing", "random");
-                    // Intent intent = new Intent(getActivity(), SettingsActivity.class);
-                    // startActivity(intent);
-                    Intent intent1 = new Intent(Intent.ACTION_PICK);
-                    intent1.setData(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent1, 2);
-                }
-                if (item.getItemId() == R.id.music) {
-                    clicklistener.onclick(Constants.FROM_DRAWERVIEW_TO_CARD_VIEW);
-                }
-                return true;
-            }
-        });
+
+
     }
+
 
     private void initialize_views(LayoutInflater inflater, ViewGroup container) {
         v = inflater.inflate(R.layout.fragment_main, container, false);
-        button = v.findViewById(R.id.search);
-        bottom_recyclerview = v.findViewById(R.id.bottom_recycler);
-
+        searchButton = v.findViewById(R.id.search);
+        bottom_bar_LinearLayout = v.findViewById(R.id.bottom_recycler);
         rootlayout = v.findViewById(R.id.rootlayout_main_fragment);
         editText = v.findViewById(R.id.meaning);
         progressbar = v.findViewById(R.id.progress);
         recyclerView = v.findViewById(R.id.recycler_view);
-        drawerLayout = v.findViewById(R.id.drawer);
-        navigationView = v.findViewById(R.id.navigation);
         toolbar = v.findViewById(R.id.toolbar_main);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, R.string.opened, R.string.closed);
+
     }
 
 
@@ -226,8 +196,8 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
         String msg = "Word: " + share_id_of_entity.getName_of_meaning().toUpperCase() + " (" + share_id_of_entity.getParts_of_speech() + ")" + " \n \n" + share_id_of_entity.getMeaning_of_word().substring(0, share_id_of_entity.getMeaning_of_word().length() - 5) + "\n\n Example: " + share_id_of_entity.getExample();
         intent.putExtra(Intent.EXTRA_TEXT, msg);
         intent.setType("text/plain");
-        if(getActivity()!=null&&isAdded())
-        startActivity(intent);
+        if (getActivity() != null && isAdded())
+            startActivity(intent);
     }
 
     private void hide_keyboard() {
@@ -254,8 +224,8 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
     @Override
     public void onStart() {
         super.onStart();
-
-        button.setOnClickListener(new View.OnClickListener() {
+        initialize_clickListener();
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
@@ -265,16 +235,6 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
         });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            if (drawerLayout.isDrawerOpen(GravityCompat.START))
-                drawerLayout.closeDrawer(GravityCompat.START);
-            else drawerLayout.openDrawer(GravityCompat.START);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
 
     @Override
@@ -282,11 +242,8 @@ public class MainFragment extends Fragment implements AbsListView.MultiChoiceMod
         super.onCreate(savedInstanceState);
         database = Database.Database_create(getActivity().getApplicationContext());
         date = new datepicker();
-        bootombar_list.add(getActivity().getResources().getDrawable(R.drawable.ic_home_black_24dp));
-        bootombar_list.add(getActivity().getResources().getDrawable(R.drawable.ic_mode_edit_black_24dp));
-        bootombar_list.add(getActivity().getResources().getDrawable(R.drawable.ic_camera_alt_black_24dp));
-        bootombar_list.add(getActivity().getResources().getDrawable(R.drawable.ic_keyboard_voice_black_24dp));
-        bootombar_list.add(getActivity().getResources().getDrawable(R.drawable.ic_settings_black_24dp));
+
+
 
 
         setHasOptionsMenu(true);

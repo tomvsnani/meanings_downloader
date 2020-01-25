@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.Html;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -41,8 +43,9 @@ public class Card_Fragment extends Fragment implements View.OnClickListener {
      private int count_next_pressed=0;
 
 
-    private Button next;
-    private Button previous;
+    private ImageButton next;
+    TextView click_to_reveal_meaning;
+    private ImageButton previous;
     private String extra;
     private List<Entity> entities;
     private String meaning;
@@ -52,12 +55,16 @@ public class Card_Fragment extends Fragment implements View.OnClickListener {
     private TextView meaningview;
     private TextView example_view;
     private ScrollView scrollView;
-    private RadioGroup radioButtonsLinear;
-    private LinearLayout linearLayout;
-    private AppBarLayout appBarLayout;
-    private RadioButton favRdaioButton ;
+    Button learned_it_button;
+    Button repeat_it_button;
+    LinearLayout prev_next_textview;
+
+   // private LinearLayout linearLayout;
+
+
     private  static Entity entity;
-    private RadioButton cardRdaioButton;
+
+    ViewGroup progressview;
     private Toolbar toolbar;
     Database database;
     String user_written_data="";
@@ -113,10 +120,11 @@ public class Card_Fragment extends Fragment implements View.OnClickListener {
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("hey");
 
         if (extra.equals(Constants.TO_OPEN_PLAY_CARDS)) {
-            linearLayout.setVisibility(View.VISIBLE);
-            radioButtonsLinear.setVisibility(View.GONE);
+            //linearLayout.setVisibility(View.VISIBLE);
+
             meaning = "<strong> <h4>Meaning :</h4></strong> " + entities.get(0).getMeaning_of_word();
             example = "<b> <h4> Example : </h4> </b> " + entities.get(0).getExample() + "";
             meaningview.setText(meaning);
@@ -127,15 +135,18 @@ public class Card_Fragment extends Fragment implements View.OnClickListener {
         } else if (extra.equals(Constants.MAIN_ADAPTER_TO_CARD_VIEW)) {
 
             set_textview(meaning,example);
-            radioButtonsLinear.setVisibility(View.GONE);
+            next.setVisibility(View.GONE);
+            previous.setVisibility(View.GONE);
+          prev_next_textview.setVisibility(View.GONE);
+            click_to_reveal_meaning.setVisibility(View.GONE);
 
         } if(extra.equals(Constants.FROM_FAVOURITE_TO_CARD_VIEW)) {
-
+toolbar.setVisibility(View.GONE);
             Collections.shuffle(entities);
-            appBarLayout.setVisibility(View.GONE);
-            linearLayout.setVisibility(View.VISIBLE);
-            radioButtonsLinear.setVisibility(View.VISIBLE);
+           prev_next_textview.setVisibility(View.GONE);
+           // linearLayout.setVisibility(View.VISIBLE);
             writeOwnWords.setVisibility(View.INVISIBLE);
+            progressview.setVisibility(View.VISIBLE);
             meaningview.setVisibility(View.GONE);
             inside_card_linear.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -143,15 +154,21 @@ public class Card_Fragment extends Fragment implements View.OnClickListener {
 
                    if(!opened) {
                        meaningview.setVisibility(View.VISIBLE);
-                       linearLayout.setVisibility(View.GONE);
-                       radioButtonsLinear.setVisibility(View.INVISIBLE);
+                       prev_next_textview.setVisibility(View.VISIBLE);
+                       next.setVisibility(View.GONE);
+                       click_to_reveal_meaning.setVisibility(View.GONE);
+                       previous.setVisibility(View.GONE);
+                     //  linearLayout.setVisibility(View.GONE);
                        set_textview(entities.get(count_next_pressed).getMeaning_of_word(), entities.get(count_next_pressed).getExample());
                        opened=true;
                    }
                    else
                    {
-                       linearLayout.setVisibility(View.VISIBLE);
-                       radioButtonsLinear.setVisibility(View.VISIBLE);
+                      // linearLayout.setVisibility(View.VISIBLE);
+                       next.setVisibility(View.VISIBLE);
+                       click_to_reveal_meaning.setVisibility(View.VISIBLE);
+                       previous.setVisibility(View.VISIBLE);
+                       prev_next_textview.setVisibility(View.GONE);
                        meaningview.setVisibility(View.GONE);
                        set_only_example_view_text();
                        opened=false;
@@ -218,21 +235,21 @@ public class Card_Fragment extends Fragment implements View.OnClickListener {
 
     private View initialize_views(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(R.layout.fragment_cardview, container, false);
-            linearLayout = v.findViewById(R.id.next_prev_buttons);
-            scrollView=v.findViewById(R.id.scroll_view);
-            radioButtonsLinear = v.findViewById(R.id.radioGRoup);
+         //   linearLayout = v.findViewById(R.id.next_prev_buttons);
+            progressview=v.findViewById(R.id.progress);
+prev_next_textview=v.findViewById(R.id.prev_next_textview);
+            learned_it_button=v.findViewById(R.id.learned_it_button);
+            repeat_it_button=v.findViewById(R.id.repeat_again);
+
             next = v.findViewById(R.id.next);
             previous = v.findViewById(R.id.previous);
-            appBarLayout = v.findViewById(R.id.appbar);
+
             inside_card_linear=v.findViewById(R.id.inside_card_linear);
-            favRdaioButton = v.findViewById(R.id.favourite_mode_in_card);
-            cardRdaioButton = v.findViewById(R.id.card_mode_in_card);
-            favRdaioButton.setOnClickListener(this);
-            cardRdaioButton.setOnClickListener(this);
-            toolbar = v.findViewById(R.id.toolbar);
+
+            toolbar = v.findViewById(R.id.toolbar1);
 
 
-
+click_to_reveal_meaning=v.findViewById(R.id.hint_reveal);
             meaningview = v.findViewById(R.id.saved_meanings);
             writeOwnWords=v.findViewById(R.id.write_own_content);
             example_view = v.findViewById(R.id.example);
@@ -298,8 +315,10 @@ if(!extra.equals(Constants.MAIN_ADAPTER_TO_CARD_VIEW))
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.d("hellooo","hello");
         if (item.getItemId() == android.R.id.home) {
-            getActivity().onBackPressed();
+           // getActivity().onBackPressed();
+            Log.d("hello","hello");
         }
         return super.onOptionsItemSelected(item);
     }

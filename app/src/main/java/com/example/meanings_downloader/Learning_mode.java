@@ -1,97 +1,126 @@
 package com.example.meanings_downloader;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.SeekBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 
+public class Learning_mode extends Fragment implements View.OnClickListener
+{
 
+    TextView num_of_words_textview;
+    TextView category_to_select_textview;
+    Spinner num_of_words_spinner;
+    Spinner category_to_select_spinner;
+    TextView main_textview;
+   Button start_learning_button;
+    ArrayAdapter num_of_words_adapeter;
+    ArrayAdapter category_adapter;
+    Adapter.Clicklistener clicklistener;
 
-public class Learning_mode extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
-    public Learning_mode() {
+    public Learning_mode(Adapter.Clicklistener clicklistener) {
         // Required empty public constructor
+        this.clicklistener=clicklistener;
     }
 
 
-    // TODO: Rename and change types and number of parameters
-    public static Learning_mode newInstance(String param1, String param2) {
-        Learning_mode fragment = new Learning_mode();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_learning_mode, container, false);
+
+        return initialize_views(inflater,container);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    private View initialize_views(LayoutInflater inflater, ViewGroup container){
+        View v=inflater.inflate(R.layout.fragment_learning_mode,container,false);
+        num_of_words_textview=v.findViewById(R.id.number_of_words_to_show);
+        num_of_words_spinner=v.findViewById(R.id.value_of_num_of_words_to_test);
+        start_learning_button=v.findViewById(R.id.learning_name_button);
+        category_to_select_textview=v.findViewById(R.id.pick_category);
+        category_to_select_spinner=v.findViewById(R.id.selectrandom_meanings_from_spinner);
+        start_learning_button.setOnClickListener(this);
+
+
+        return v;
+
+
+   }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        num_of_words_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+              //  ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        category_to_select_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               // ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+
+        });
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        num_of_words_adapeter=ArrayAdapter.createFromResource(getContext(),R.array.num_of_words_to_learn,android.R.layout.simple_spinner_dropdown_item);
+        num_of_words_spinner.setAdapter(num_of_words_adapeter);
+
+        category_adapter=ArrayAdapter.createFromResource(getContext(),R.array.select_category_of_words_to_display,android.R.layout.simple_spinner_dropdown_item);
+        category_to_select_spinner.setAdapter(category_adapter);
+        super.onActivityCreated(savedInstanceState);
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+
+    @Override
+    public void onClick(View v) {
+        clicklistener.onclick(Constants.FROM_FAVOURITE_TO_CARD_VIEW);
+
     }
 }

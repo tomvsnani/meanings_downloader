@@ -1,67 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:fillViewport="true"
-    android:fitsSystemWindows="true"
+    android:layout_height="match_parent"
     android:background="#e0e0e0"
-    android:id="@+id/scroll_view"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
->
-        <include layout="@layout/app_bar_layout" />
-        <include layout="@layout/radio_buttons"/>
+    <include layout="@layout/app_bar_layout" />
+
+    <include
+        android:id="@+id/progress"
+        layout="@layout/test_layout"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/inside_card_linear"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginRight="31dp"
-        android:background="@drawable/shape"
+
+        android:layout_marginTop="30dp"
+        android:background="@drawable/ripple"
         android:gravity="center"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         tools:elevation="8dp">
 
-        <TextView
-            android:id="@+id/saved_meanings"
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
+        <ImageButton
+            android:id="@+id/previous"
+            style="?attr/buttonBarNegativeButtonStyle"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/left_arrow"
+
+            android:text="@string/previous" />
+
+        <LinearLayout
+
+            android:layout_width="335dp"
+            android:layout_height="match_parent"
+
+
             android:gravity="center"
-            tools:text="meaning" />
+            android:orientation="vertical"
+            tools:elevation="8dp">
 
-        <TextView
-            android:id="@+id/example"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:gravity="center"
-            android:linksClickable="true"
-            android:textColorLink="#40286c" />
+            <TextView
+                android:id="@+id/saved_meanings"
 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                tools:text="meaning" />
+
+            <TextView
+                android:id="@+id/example"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:gravity="center"
+
+                android:linksClickable="true"
+                android:textColorLink="#40286c" />
+
+            <TextView
+                android:id="@+id/hint_reveal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:hint="click to reveal the meaning" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/next"
+            style="?attr/buttonBarPositiveButtonStyle"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/right_arrow"
+            android:text="@string/next" />
     </LinearLayout>
-    <include layout="@layout/next_prev_buttons"/>
-    <include layout="@layout/second_card_layout"/>
+
+    <include layout="@layout/second_card_layout"
 
 
-
-
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="0.5"/>
 
 
 </LinearLayout>
 
 
-</ScrollView>
