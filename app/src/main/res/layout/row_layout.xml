@@ -23,7 +23,7 @@
         android:maxLines="1"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:text="@string/meaning"
+
         android:textColor="#616161"
         android:textSize="20sp"
         android:textStyle="italic"

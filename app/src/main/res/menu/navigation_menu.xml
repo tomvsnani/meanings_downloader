@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="datapicker"
-        android:id="@+id/date"/>
-    <item android:id="@+id/random"
-        android:title="random"/>
-    <item android:id="@+id/music"
-        android:title="@string/favourites"/>
-    <item android:id="@+id/saved_meanings"
-        android:title="saved_meanings"/>
+    <item android:title="Difficult Words"
+        android:id="@+id/difficult_words"/>
+    <item android:id="@+id/word_of_the_day"
+        android:title="Word of the day"/>
+    <item android:id="@+id/saved_speech"
+        android:title="Saved Speech"/>
+    <item android:id="@+id/settings"
+        android:title="Settings"
+       />
 
 </menu>

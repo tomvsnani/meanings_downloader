@@ -84,14 +84,16 @@ public class Adapter extends ListAdapter {
 
         entity = (Entity) getItem(position);
         list.add(entity.getName_of_meaning());
+//        Log.d("entityyy",entity.getName_of_meaning());
 
 
-        ((Holder) holder).textView_meaning.setText(Html.fromHtml(entity.getName_of_meaning()));
-        ((Holder) holder).parts_of_speech_textView.setText(Html.fromHtml(" ( <small><small><font color=#cb32c9>" + entity.getParts_of_speech() + "</font>" + "</small></small>)"));
-        if (entity.getFav_meaning() == 0)
-            ((Holder) holder).fav_meaning_image_textView.setImageResource(R.drawable.likes_on_itemview);
-        else
-            ((Holder) holder).fav_meaning_image_textView.setImageResource(R.drawable.likesfill);
+            ((Holder) holder).textView_meaning.setText(Html.fromHtml(entity.getName_of_meaning()));
+           // ((Holder) holder).parts_of_speech_textView.setText(Html.fromHtml(" ( <small><small><font color=#cb32c9>" + entity.getParts_of_speech() + "</font>" + "</small></small>)"));
+            if (entity.getFav_meaning() == 0)
+                ((Holder) holder).fav_meaning_image_textView.setImageResource(R.drawable.likes_on_itemview);
+            else
+                ((Holder) holder).fav_meaning_image_textView.setImageResource(R.drawable.likesfill);
+
 
     }
 
@@ -108,7 +110,7 @@ public class Adapter extends ListAdapter {
     public interface Clicklistener {
         public void onclick(int adapterposition, Entity entity, View view);
 
-        public void onclick(String extra);
+        public void onclick(String extra,String category,int num_of_words);
     }
 
     class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {

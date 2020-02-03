@@ -5,17 +5,21 @@
     android:orientation="vertical">
 
     <SeekBar
-        android:layout_width="match_parent"
+        android:id="@+id/seekbar"
+        android:layout_width="385dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:progress="5"
+
+        android:padding="10dp"
+
+        android:progress="0"
+
+
         android:progressDrawable="@drawable/progress_color"
         android:splitTrack="false"
-        android:thumb="@drawable/custom_thumb"
-
-
-        />
+        android:thumb="@drawable/custom_thumb" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +35,7 @@
             android:layout_marginRight="25dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="words_checked : 3/10"
+
 
             android:textSize="18sp"
             android:textStyle="bold|italic" />
@@ -42,7 +46,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="words_learned : 4/10"
+
 
             android:textSize="18sp"
             android:textStyle="bold|italic" />

@@ -37,7 +37,7 @@
 
 
             android:gravity="center_vertical"
-            android:text="Set Category"
+            android:text="@string/set_category"
             android:textSize="18sp"
             android:padding="10dp"
            />
@@ -73,7 +73,7 @@
             android:gravity="center_vertical"
 
             android:padding="10dp"
-            android:text="Set number of words"
+            android:text="@string/set_number_of_words"
             android:textSize="18sp"
           />
 
@@ -107,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Start Learning"
+            android:text="@string/start_learning"
             android:textColor="#ffffff"
             android:textSize="22sp"
             android:textStyle="italic" />
@@ -131,7 +131,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Learned Words"
+            android:text="@string/learned_words"
             android:textColor="#ffffff"
             android:textSize="22sp"
             android:textStyle="italic" />
@@ -155,7 +155,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Repeating words"
+            android:text="@string/difficult_words"
             android:textColor="#ffffff"
             android:textSize="22sp"
             android:textStyle="italic" />

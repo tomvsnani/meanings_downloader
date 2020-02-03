@@ -37,13 +37,7 @@
                 android:layout_weight="1"
                 android:src="@drawable/learn_icon_light" />
 
-            <ImageButton
-                android:id="@+id/camera_icon"
-                style="?attr/borderlessButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/camera_icon_light" />
+
 
             <ImageButton
                 android:id="@+id/speak_icon"

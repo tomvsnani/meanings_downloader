@@ -22,16 +22,20 @@ public class Fav_fragment extends Fragment implements View.OnClickListener {
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayout;
     private Fav_meaning_Adapter fav_meaning_adapter;
-    private List<Entity> entities;
+    private List entities;
     private Adapter.Clicklistener clicklistener;
     private RadioButton favouriteRadioButton;
     private RadioButton cardRadioButton;
+    String extra;
 
-    Fav_fragment(List<Entity> entities, Adapter.Clicklistener clicklistener) {
+    Fav_fragment(List entities, Adapter.Clicklistener clicklistener,String extra) {
         this.entities = entities;
         this.clicklistener = clicklistener;
+        this.extra=extra;
 
     }
+
+
 
     public Fav_fragment() {
     }
@@ -53,7 +57,7 @@ public class Fav_fragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_favourite, container, false);
         recyclerView = view.findViewById(R.id.fav_recycler);
         linearLayout = new LinearLayoutManager(getContext());
-        fav_meaning_adapter = new Fav_meaning_Adapter(clicklistener);
+        fav_meaning_adapter = new Fav_meaning_Adapter(clicklistener,extra,getContext());
         fav_meaning_adapter.submitList(entities);
         recyclerView.setLayoutManager(linearLayout);
         recyclerView.setAdapter(fav_meaning_adapter);

@@ -8,7 +8,10 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@androidx.room.Database(entities = {Entity.class},version = 1,exportSchema = false)
+import com.example.meanings_downloader.SaveSpokenWordsEntity;
+import com.example.meanings_downloader.Setnum_entity;
+
+@androidx.room.Database(entities = {Entity.class, SaveSpokenWordsEntity.class, Setnum_entity.class},version = 2,exportSchema = false)
 public abstract class Database extends RoomDatabase {
     private static Database INSTANCE;
     private static Object object=new Object();
