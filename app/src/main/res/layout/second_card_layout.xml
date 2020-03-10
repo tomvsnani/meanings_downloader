@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<EditText android:id="@+id/write_own_content"
+    android:layout_width="360dp"
+    android:layout_height="187dp"
+    android:layout_margin="25dp"
+    android:layout_marginStart="25dp"
+    android:layout_marginLeft="25dp"
+    android:layout_marginEnd="25dp"
+    android:layout_marginRight="25dp"
+    android:background="@drawable/ripple"
+    android:inputType="textMultiLine"
+    android:gravity="top"
+    android:hint="@string/write_something_to_it_remember_in_your_words"
+    android:minHeight="150dp"
+    android:padding="16dp"
+
+   />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:id="@+id/prev_next_textview"
+        android:orientation="vertical">
+<FrameLayout
+android:layout_width="match_parent"
+android:layout_height="60dp"
+
+android:layout_marginBottom="5dp"
+    android:background="#40286c"
+tools:elevation="10dp"
+android:orientation="vertical">
+
+
+<Button
+    android:id="@+id/learned_it_button"
+    style="?android:attr/borderlessButtonStyle"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:text="I Learned it"
+    android:textColor="#ffffff"
+    android:textSize="22sp"
+    android:textStyle="italic" />
+</FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+
+            android:background="#40286c"
+            android:orientation="vertical"
+            tools:elevation="10dp">
+
+
+            <Button
+                android:id="@+id/repeat_again"
+                style="?android:attr/borderlessButtonStyle"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Add to Difficult words"
+                android:textColor="#ffffff"
+                android:textSize="22sp"
+                android:textStyle="italic" />
+        </FrameLayout>
+    </LinearLayout>
+
+</FrameLayout>

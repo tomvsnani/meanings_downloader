@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="#e0e0e0"
+    tools:context=".Learning_mode">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/toolbar_learing"
+            app:title="Learn Vocabulary"
+            app:titleTextColor="#ffffff"
+/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/pick_category"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+
+            android:gravity="center_vertical"
+            android:text="@string/set_category"
+            android:textSize="18sp"
+            android:padding="10dp"
+           />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/selectrandom_meanings_from_spinner"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:gravity="end|center"
+
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/number_of_words_to_show"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:gravity="center_vertical"
+
+            android:padding="10dp"
+            android:text="@string/set_number_of_words"
+            android:textSize="18sp"
+          />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/value_of_num_of_words_to_test"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+
+
+            android:gravity="end|center" />
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:layout_width="350dp"
+        android:layout_height="150dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        tools:elevation="10dp"
+        android:background="@drawable/two_color"
+        android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/learning_name_button"
+            style="?android:attr/borderlessButtonStyle"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/start_learning"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            android:textStyle="italic" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="350dp"
+        android:layout_height="150dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="30dp"
+        tools:elevation="10dp"
+        android:background="@drawable/two_color"
+        android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/Learned_words_button"
+            style="?android:attr/borderlessButtonStyle"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/learned_words"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            android:textStyle="italic" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="350dp"
+        android:layout_height="150dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/two_color"
+        tools:elevation="10dp"
+        android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/repeat_vocab_button"
+            style="?android:attr/borderlessButtonStyle"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/difficult_words"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            android:textStyle="italic" />
+    </FrameLayout>
+
+
+</LinearLayout>
